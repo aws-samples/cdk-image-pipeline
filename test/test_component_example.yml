@@ -1,0 +1,23 @@
+name: ComponentExample
+description: This is an example component document
+schemaVersion: 1.0
+
+phases:
+  - name: build
+    steps:
+      - name: InstallUpdates
+        action: UpdateOS
+  - name: validate
+    steps:
+      - name: HelloWorldStep
+        action: ExecuteBash
+        inputs:
+          commands:
+            - echo "Hello World! Validate."
+  - name: test
+    steps:
+      - name: HelloWorldStep
+        action: ExecuteBash
+        inputs:
+          commands:
+            - echo "Hello World! Test.
