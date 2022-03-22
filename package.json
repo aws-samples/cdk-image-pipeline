@@ -33,7 +33,7 @@
     "projen": "npx projen"
   },
   "author": {
-    "name": "Cameron Magee",
+    "name": "Amazon.com, Inc. or its affiliates. All Rights Reserved.",
     "email": "magcamer@amazon.com",
     "organization": false
   },
