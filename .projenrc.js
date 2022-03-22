@@ -15,6 +15,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   },
   license: 'MIT-0',
   pullRequestTemplateContents: ['# Fixes', ' ', ' ', ' ', 'By submitting this pull request, I confirm that you can use, modify, copy, and redistribute this contribution, under the terms of your choice.'],
+  releaseToNpm: true,
 });
 
 project.addPeerDeps('aws-cdk-lib');
