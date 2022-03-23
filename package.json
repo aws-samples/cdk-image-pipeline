@@ -33,15 +33,15 @@
     "projen": "npx projen"
   },
   "author": {
-    "name": "Amazon.com, Inc. or its affiliates. All Rights Reserved.",
+    "name": "Cameron Magee",
     "email": "magcamer@amazon.com",
     "organization": false
   },
   "devDependencies": {
     "@types/jest": "^27.4.1",
     "@types/node": "^12",
-    "@typescript-eslint/eslint-plugin": "^5.16.0",
-    "@typescript-eslint/parser": "^5.16.0",
+    "@typescript-eslint/eslint-plugin": "^5",
+    "@typescript-eslint/parser": "^5",
     "aws-cdk-lib": "2.1.0",
     "constructs": "10.0.5",
     "eslint": "^8",
@@ -55,7 +55,7 @@
     "jsii-docgen": "^6.2.4",
     "jsii-pacmak": "^1.55.1",
     "json-schema": "^0.4.0",
-    "npm-check-updates": "^12.5.4",
+    "npm-check-updates": "^12",
     "projen": "^0.52.75",
     "standard-version": "^9",
     "ts-jest": "^27.1.3",
