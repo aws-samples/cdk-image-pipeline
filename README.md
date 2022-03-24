@@ -1,3 +1,7 @@
+[![npm version](https://badge.fury.io/js/cdk-image-pipeline.svg)](https://badge.fury.io/js/cdk-image-pipeline)
+[![PyPI version](https://badge.fury.io/py/cdk-image-pipeline.svg)](https://badge.fury.io/py/cdk-image-pipeline)
+[![GitHub version](https://badge.fury.io/gh/aws-samples%2Fcdk-image-pipeline.svg)](https://badge.fury.io/gh/aws-samples%2Fcdk-image-pipeline)
+
 # CDK Image Pipeline
 
 ---
