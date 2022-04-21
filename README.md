@@ -171,7 +171,7 @@ image_pipeline = ImagePipeline(
     parent_image="ami-0e1d30f2c40c4c701",
     profile_name="ImagePipelineProfile4",
     security_groups=[sg.security_group_id],
-    subnet_id=priv_subnet[0].subnet_id
+    subnet_id=priv_subnets[0].subnet_id
 )
 ```
 
