@@ -109,7 +109,7 @@ Python usage:
 
 ```python
 from cdk_image_pipeline import ImagePipeline
-from consturcts import Construct
+from constructs import Construct
 
 # ...
 image_pipeline = ImagePipeline(
@@ -171,7 +171,7 @@ image_pipeline = ImagePipeline(
     parent_image="ami-0e1d30f2c40c4c701",
     profile_name="ImagePipelineProfile4",
     security_groups=[sg.security_group_id],
-    subnet_id=private_subnet[0].subnet_id
+    subnet_id=priv_subnet[0].subnet_id
 )
 ```
 
