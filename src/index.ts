@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as imagebuilder from 'aws-cdk-lib/aws-imagebuilder';
+import * as kms from 'aws-cdk-lib/aws-kms';
 import * as sns from 'aws-cdk-lib/aws-sns';
 import * as subscriptions from 'aws-cdk-lib/aws-sns-subscriptions';
 import { Construct } from 'constructs';
@@ -39,6 +40,10 @@ export interface ImagePipelineProps {
    */
   readonly parentImage: string;
   /**
+   * KMS Key used to encrypt the SNS topic. Enter an existing KMS Key Alias in your target account/region.
+   */
+  readonly kmsKeyAlias: string;
+  /**
    * List of instance types used in the Instance Configuration (Default: [ 't3.medium', 'm5.large', 'm5.xlarge' ])
    */
   readonly instanceTypes?: string[];
@@ -66,8 +71,12 @@ export class ImagePipeline extends Construct {
     super(scope, id);
     let infrastructureConfig = null;
     // Constuct code below
+    const kmsKey = kms.Key.fromLookup(this, 'KmsKeyLookup', {
+      aliasName: props.kmsKeyAlias,
+    });
     const topic = new sns.Topic(this, 'ImageBuilderTopic', {
       displayName: 'Image Builder Notify',
+      masterKey: kmsKey,
     });
 
     if (props.email != null) {

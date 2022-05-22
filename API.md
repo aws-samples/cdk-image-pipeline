@@ -121,6 +121,7 @@ const imagePipelineProps: ImagePipelineProps = { ... }
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.componentName">componentName</a></code> | <code>string</code> | Name of the Component. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.imageRecipe">imageRecipe</a></code> | <code>string</code> | Name of the Image Recipe. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.infraConfigName">infraConfigName</a></code> | <code>string</code> | Name of the Infrastructure Configuration for Image Builder. |
+| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.kmsKeyAlias">kmsKeyAlias</a></code> | <code>string</code> | KMS Key used to encrypt the SNS topic. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.parentImage">parentImage</a></code> | <code>string</code> | The source (parent) image that the image recipe uses as its base environment. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.pipelineName">pipelineName</a></code> | <code>string</code> | Name of the Image Pipeline. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.profileName">profileName</a></code> | <code>string</code> | Name of the instance profile that will be associated with the Instance Configuration. |
@@ -178,6 +179,20 @@ public readonly infraConfigName: string;
 - *Type:* string
 
 Name of the Infrastructure Configuration for Image Builder.
+
+---
+
+##### `kmsKeyAlias`<sup>Required</sup> <a name="kmsKeyAlias" id="cdk-image-pipeline.ImagePipelineProps.property.kmsKeyAlias"></a>
+
+```typescript
+public readonly kmsKeyAlias: string;
+```
+
+- *Type:* string
+
+KMS Key used to encrypt the SNS topic.
+
+Enter an existing KMS Key Alias in your target account/region.
 
 ---
 
