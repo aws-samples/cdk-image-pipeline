@@ -32,6 +32,8 @@ const propsWithNetworking: ImagePipelineProps = {
 };
 
 beforeAll(() => {
+  process.env.CDK_DEFAULT_ACCOUNT = '123456789012';
+  process.env.CDK_DEFAULT_REGION = 'us-east-1';
   const app = new cdk.App();
   const testStack = new cdk.Stack(app, 'testStack', {
     env: {
