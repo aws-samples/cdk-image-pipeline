@@ -5,8 +5,9 @@ import { ImagePipeline, ImagePipelineProps } from '../src';
 let template: Template;
 
 const props: ImagePipelineProps = {
-  componentDocPath: 'test/test_component_example.yml',
-  componentName: 'TestComponent',
+  componentDocuments: ['test/test_component_example.yml'],
+  componentNames: ['TestComponent'],
+  componentVersions: ['1.0.0'],
   profileName: 'TestProfile',
   infraConfigName: 'TestInfrastructureConfig',
   imageRecipe: 'TestImageRecipe',
@@ -17,8 +18,9 @@ const props: ImagePipelineProps = {
 };
 
 const propsWithNetworking: ImagePipelineProps = {
-  componentDocPath: 'test/test_component_example.yml',
-  componentName: 'TestComponent',
+  componentDocuments: ['test/test_component_example.yml'],
+  componentNames: ['TestComponent'],
+  componentVersions: ['1.0.0'],
   profileName: 'TestProfile',
   infraConfigName: 'TestInfrastructureConfig',
   imageRecipe: 'TestImageRecipe',
