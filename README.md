@@ -16,7 +16,7 @@ This construct creates the required infrastructure for an Image Pipeline:
 
 - An EC2 Image Builder recipe defines the base image to use as your starting point to create a new image, along with the set of components that you add to customize your image and verify that everything is working as expected.
 
-- Image Builder uses the AWS Task Orchestrator and Executor (AWSTOE) component management application to orchestrate complex workflows. AWSTOE components are based on YAML documents that define the scripts to customize or test your image
+- Image Builder uses the AWS Task Orchestrator and Executor (AWSTOE) component management application to orchestrate complex workflows. AWSTOE components are based on YAML documents that define the scripts to customize or test your image. This construct supports single or multiple components.
 
 - Image Builder image pipelines provide an automation framework for creating and maintaining custom AMIs and container images.
 
@@ -47,8 +47,10 @@ import { Construct } from 'constructs';
 // ...
 // Create a new image pipeline with the required properties
 new ImagePipeline(this, "MyImagePipeline", {
-    componentDocPath: 'path/to/component_doc.yml',
-    componentName: 'MyComponent',
+    componentDocuments: ['component_example.yml', 'component_example_2.yml'],
+    componentNames: ['Component', 'Component2'],
+    componentVersions: ['0.0.1', '0.1.0'],
+    kmsKeyAlias: 'alias/my-key',
     profileName: 'ImagePipelineInstanceProfile',
     infraConfigName: 'MyInfrastructureConfiguration',
     imageRecipe: 'MyImageRecipe',
@@ -93,8 +95,10 @@ const private_subnet = vpc.privateSubnets;
 
 
 new ImagePipeline(this, "MyImagePipeline", {
-    componentDocPath: 'path/to/component_doc.yml',
-    componentName: 'MyComponent',
+    componentDocuments: ['component_example.yml', 'component_example_2.yml'],
+    componentNames: ['Component', 'Component2'],
+    componentVersions: ['0.0.1', '0.1.0'],
+    kmsKeyAlias: 'alias/my-key',
     profileName: 'ImagePipelineInstanceProfile',
     infraConfigName: 'MyInfrastructureConfiguration',
     imageRecipe: 'MyImageRecipe',
@@ -115,14 +119,17 @@ from constructs import Construct
 image_pipeline = ImagePipeline(
     self,
     "LatestImagePipeline",
-    component_doc_path="component_example.yml",
-    component_name="Comp4",
+    component_documents=["component_example.yml", "component_example2.yml"],
+    component_names=["Component", "Component2"],
+    component_versions=["0.0.1", "0.1.0"],
+    kms_key_alias="alias/my-key",
     image_recipe="Recipe4",
     pipeline_name="Pipeline4",
     infra_config_name="InfraConfig4",
     parent_image="ami-0e1d30f2c40c4c701",
     profile_name="ImagePipelineProfile4",
 )
+# ...
 ```
 
 ```python
@@ -163,8 +170,10 @@ priv_subnets = vpc.private_subnets
 image_pipeline = ImagePipeline(
     self,
     "LatestImagePipeline",
-    component_doc_path="component_example.yml",
-    component_name="Comp4",
+    component_documents=["component_example.yml", "component_example2.yml"],
+    component_names=["Component", "Component2"],
+    component_versions=["0.0.1", "0.1.0"],
+    kms_key_alias="alias/my-key",
     image_recipe="Recipe4",
     pipeline_name="Pipeline4",
     infra_config_name="InfraConfig4",
@@ -173,6 +182,7 @@ image_pipeline = ImagePipeline(
     security_groups=[sg.security_group_id],
     subnet_id=priv_subnets[0].subnet_id
 )
+# ...
 ```
 
 ### Component Documents
@@ -208,6 +218,19 @@ phases:
           commands:
             - echo "Hello World! Test.
 ```
+
+### Multiple Components
+
+To specify multiple components, add additional component documents to the `componentDoucments` property. You can also add the names and versions of these components via the `componentNames` and `componentVersions` properties (_See usage examples above_). The components will be associated to the Image Recipe that gets created as part of the construct.
+
+Be sure to update the `imageRecipeVersion` property when making updates to your components after your initial deployment.
+
+### SNS Encryption using KMS
+
+---
+
+Specify an alias via the `kmsKeyAlias` property which will be used to encrypt the SNS topic.
+
 
 ### Infrastructure Configuration Instance Types
 
