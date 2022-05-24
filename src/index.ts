@@ -1,19 +1,24 @@
 import { readFileSync } from 'fs';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as imagebuilder from 'aws-cdk-lib/aws-imagebuilder';
+import * as kms from 'aws-cdk-lib/aws-kms';
 import * as sns from 'aws-cdk-lib/aws-sns';
 import * as subscriptions from 'aws-cdk-lib/aws-sns-subscriptions';
 import { Construct } from 'constructs';
 
 export interface ImagePipelineProps {
   /**
-   * Relative path to the Image Builder component document
+   * Relative path to Image Builder component documents
    */
-  readonly componentDocPath: string;
+  readonly componentDocuments: string[];
   /**
-   * Name of the Component
+   * Names of the Component Documents
    */
-  readonly componentName: string;
+  readonly componentNames: string[];
+  /**
+   * Versions for each component document
+   */
+  readonly componentVersions: string[];
   /**
    * Name of the instance profile that will be associated with the Instance Configuration.
    */
@@ -39,6 +44,10 @@ export interface ImagePipelineProps {
    */
   readonly parentImage: string;
   /**
+   * KMS Key used to encrypt the SNS topic. Enter an existing KMS Key Alias in your target account/region.
+   */
+  readonly kmsKeyAlias: string;
+  /**
    * List of instance types used in the Instance Configuration (Default: [ 't3.medium', 'm5.large', 'm5.xlarge' ])
    */
   readonly instanceTypes?: string[];
@@ -60,14 +69,20 @@ export interface ImagePipelineProps {
   readonly subnetId?: string;
 }
 
-
 export class ImagePipeline extends Construct {
+  imageRecipeComponents: imagebuilder.CfnImageRecipe.ComponentConfigurationProperty[];
   constructor(scope: Construct, id: string, props: ImagePipelineProps) {
     super(scope, id);
     let infrastructureConfig = null;
-    // Constuct code below
+    this.imageRecipeComponents = [];
+
+    // Construct code below
+    const kmsKey = kms.Key.fromLookup(this, 'KmsKeyLookup', {
+      aliasName: props.kmsKeyAlias,
+    });
     const topic = new sns.Topic(this, 'ImageBuilderTopic', {
       displayName: 'Image Builder Notify',
+      masterKey: kmsKey,
     });
 
     if (props.email != null) {
@@ -110,21 +125,26 @@ export class ImagePipeline extends Construct {
 
     infrastructureConfig.addDependsOn(profile);
 
-    const component = new imagebuilder.CfnComponent(this, 'Component', {
-      name: props.componentName,
-      platform: props.platform ?? 'Linux',
-      version: '1.0.0',
-      data: readFileSync(props.componentDocPath).toString(),
-    });
-
     const imageRecipe = new imagebuilder.CfnImageRecipe(this, 'ImageRecipe', {
-      components: [{
-        componentArn: component.attrArn,
-      }],
+      components: [],
       name: props.imageRecipe,
       parentImage: props.parentImage,
       version: props.imageRecipeVersion ?? '0.0.1',
     });
+
+    props.componentDocuments.forEach((document, index) => {
+      let component = new imagebuilder.CfnComponent(this, props.componentNames[index], {
+        name: props.componentNames[index],
+        platform: props.platform ?? 'Linux',
+        version: props.componentVersions[index] ?? '0.0.1',
+        data: readFileSync(document).toString(),
+      });
+
+      // add the component to the Image Recipe
+      this.imageRecipeComponents.push({ componentArn: component.attrArn });
+      imageRecipe.components = this.imageRecipeComponents;
+    });
+
 
     new imagebuilder.CfnImagePipeline(this, 'ImagePipeline', {
       infrastructureConfigurationArn: infrastructureConfig.attrArn,

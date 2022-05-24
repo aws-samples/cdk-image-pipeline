@@ -85,6 +85,7 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#cdk-image-pipeline.ImagePipeline.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#cdk-image-pipeline.ImagePipeline.property.imageRecipeComponents">imageRecipeComponents</a></code> | <code>aws-cdk-lib.aws_imagebuilder.CfnImageRecipe.ComponentConfigurationProperty[]</code> | *No description.* |
 
 ---
 
@@ -97,6 +98,16 @@ public readonly node: Node;
 - *Type:* constructs.Node
 
 The tree node.
+
+---
+
+##### `imageRecipeComponents`<sup>Required</sup> <a name="imageRecipeComponents" id="cdk-image-pipeline.ImagePipeline.property.imageRecipeComponents"></a>
+
+```typescript
+public readonly imageRecipeComponents: ComponentConfigurationProperty[];
+```
+
+- *Type:* aws-cdk-lib.aws_imagebuilder.CfnImageRecipe.ComponentConfigurationProperty[]
 
 ---
 
@@ -117,10 +128,12 @@ const imagePipelineProps: ImagePipelineProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.componentDocPath">componentDocPath</a></code> | <code>string</code> | Relative path to the Image Builder component document. |
-| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.componentName">componentName</a></code> | <code>string</code> | Name of the Component. |
+| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.componentDocuments">componentDocuments</a></code> | <code>string[]</code> | Relative path to Image Builder component documents. |
+| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.componentNames">componentNames</a></code> | <code>string[]</code> | Names of the Component Documents. |
+| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.componentVersions">componentVersions</a></code> | <code>string[]</code> | Versions for each component document. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.imageRecipe">imageRecipe</a></code> | <code>string</code> | Name of the Image Recipe. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.infraConfigName">infraConfigName</a></code> | <code>string</code> | Name of the Infrastructure Configuration for Image Builder. |
+| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.kmsKeyAlias">kmsKeyAlias</a></code> | <code>string</code> | KMS Key used to encrypt the SNS topic. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.parentImage">parentImage</a></code> | <code>string</code> | The source (parent) image that the image recipe uses as its base environment. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.pipelineName">pipelineName</a></code> | <code>string</code> | Name of the Image Pipeline. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.profileName">profileName</a></code> | <code>string</code> | Name of the instance profile that will be associated with the Instance Configuration. |
@@ -133,27 +146,39 @@ const imagePipelineProps: ImagePipelineProps = { ... }
 
 ---
 
-##### `componentDocPath`<sup>Required</sup> <a name="componentDocPath" id="cdk-image-pipeline.ImagePipelineProps.property.componentDocPath"></a>
+##### `componentDocuments`<sup>Required</sup> <a name="componentDocuments" id="cdk-image-pipeline.ImagePipelineProps.property.componentDocuments"></a>
 
 ```typescript
-public readonly componentDocPath: string;
+public readonly componentDocuments: string[];
 ```
 
-- *Type:* string
+- *Type:* string[]
 
-Relative path to the Image Builder component document.
+Relative path to Image Builder component documents.
 
 ---
 
-##### `componentName`<sup>Required</sup> <a name="componentName" id="cdk-image-pipeline.ImagePipelineProps.property.componentName"></a>
+##### `componentNames`<sup>Required</sup> <a name="componentNames" id="cdk-image-pipeline.ImagePipelineProps.property.componentNames"></a>
 
 ```typescript
-public readonly componentName: string;
+public readonly componentNames: string[];
 ```
 
-- *Type:* string
+- *Type:* string[]
 
-Name of the Component.
+Names of the Component Documents.
+
+---
+
+##### `componentVersions`<sup>Required</sup> <a name="componentVersions" id="cdk-image-pipeline.ImagePipelineProps.property.componentVersions"></a>
+
+```typescript
+public readonly componentVersions: string[];
+```
+
+- *Type:* string[]
+
+Versions for each component document.
 
 ---
 
@@ -178,6 +203,20 @@ public readonly infraConfigName: string;
 - *Type:* string
 
 Name of the Infrastructure Configuration for Image Builder.
+
+---
+
+##### `kmsKeyAlias`<sup>Required</sup> <a name="kmsKeyAlias" id="cdk-image-pipeline.ImagePipelineProps.property.kmsKeyAlias"></a>
+
+```typescript
+public readonly kmsKeyAlias: string;
+```
+
+- *Type:* string
+
+KMS Key used to encrypt the SNS topic.
+
+Enter an existing KMS Key Alias in your target account/region.
 
 ---
 
