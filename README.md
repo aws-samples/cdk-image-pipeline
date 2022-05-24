@@ -16,7 +16,7 @@ This construct creates the required infrastructure for an Image Pipeline:
 
 - An EC2 Image Builder recipe defines the base image to use as your starting point to create a new image, along with the set of components that you add to customize your image and verify that everything is working as expected.
 
-- Image Builder uses the AWS Task Orchestrator and Executor (AWSTOE) component management application to orchestrate complex workflows. AWSTOE components are based on YAML documents that define the scripts to customize or test your image. This construct supports single or multiple components.
+- Image Builder uses the AWS Task Orchestrator and Executor (AWSTOE) component management application to orchestrate complex workflows. AWSTOE components are based on YAML documents that define the scripts to customize or test your image. Support for multiple components.
 
 - Image Builder image pipelines provide an automation framework for creating and maintaining custom AMIs and container images.
 
@@ -57,6 +57,7 @@ new ImagePipeline(this, "MyImagePipeline", {
     pipelineName: 'MyImagePipeline',
     parentImage: 'ami-0e1d30f2c40c4c701'
 })
+// ...
 ```
 
 By default, the infrastructure configuration will deploy EC2 instances for the build/test phases into a default VPC using the default security group. If you want to control where the instances are launched, you can specify an existing VPC `SubnetID` and a list of `SecurityGroupIds`. In the example below, a new VPC is created and referenced in the `ImagePipeline` construct object.
@@ -107,6 +108,7 @@ new ImagePipeline(this, "MyImagePipeline", {
     securityGroups: [sg.securityGroupId],
     subnetId: private_subnet[0].subnetId,
 })
+// ...
 ```
 
 Python usage:
