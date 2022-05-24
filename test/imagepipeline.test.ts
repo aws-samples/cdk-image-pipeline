@@ -5,8 +5,8 @@ import { ImagePipeline, ImagePipelineProps } from '../src';
 let template: Template;
 
 const props: ImagePipelineProps = {
-  componentDocuments: ['test/test_component_example.yml'],
-  componentNames: ['TestComponent'],
+  componentDocuments: ['test/test_component_example.yml', 'test/test_component_example_2.yml'],
+  componentNames: ['TestComponent', 'TestComponent2'],
   componentVersions: ['1.0.0'],
   profileName: 'TestProfile',
   infraConfigName: 'TestInfrastructureConfig',
@@ -67,7 +67,6 @@ test('Infrastructure Configuration IAM Role and Instance Profile are created', (
 });
 
 test('IAM Role contains necessary permission set', () => {
-  console.log(template.findResources);
   template.hasResourceProperties('AWS::IAM::Role',
     Match.anyValue());
 });
@@ -111,7 +110,7 @@ test.skip('Infrastructure Configuration DependsOn Instance Profile', () => {
 });
 
 test('Image Builder Component is created', () => {
-  template.resourceCountIs('AWS::ImageBuilder::Component', 1);
+  template.resourceCountIs('AWS::ImageBuilder::Component', props.componentDocuments.length);
 });
 
 test('Image Recipe is created', () => {

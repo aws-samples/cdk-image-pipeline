@@ -1,0 +1,28 @@
+name: ComponentExample
+description: This is an example component document
+schemaVersion: 1.0
+
+phases:
+  - name: build
+    steps:
+      - name: InstallUpdates
+        action: UpdateOS
+      - name: DownloadSomeShellScriptFromS3
+        action: S3Download
+        inputs:
+          - source: 's3://some-bucket/some_shell_script.sh'
+            destination: '/tmp/some_shell_script.sh'
+  - name: validate
+    steps:
+      - name: HelloWorldStep
+        action: ExecuteBash
+        inputs:
+          commands:
+            - echo "Hello World! Validate."
+  - name: test
+    steps:
+      - name: HelloWorldStep
+        action: ExecuteBash
+        inputs:
+          commands:
+            - echo "Hello World! Test.

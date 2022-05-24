@@ -125,13 +125,6 @@ export class ImagePipeline extends Construct {
 
     infrastructureConfig.addDependsOn(profile);
 
-    // const component = new imagebuilder.CfnComponent(this, 'Component', {
-    //   name: props.componentName,
-    //   platform: props.platform ?? 'Linux',
-    //   version: '1.0.0',
-    //   data: readFileSync(props.componentDocPath).toString(),
-    // });
-
     const imageRecipe = new imagebuilder.CfnImageRecipe(this, 'ImageRecipe', {
       components: [],
       name: props.imageRecipe,
@@ -143,7 +136,7 @@ export class ImagePipeline extends Construct {
       let component = new imagebuilder.CfnComponent(this, props.componentNames[index], {
         name: props.componentNames[index],
         platform: props.platform ?? 'Linux',
-        version: props.componentVersions[index],
+        version: props.componentVersions[index] ?? '0.0.1',
         data: readFileSync(document).toString(),
       });
 
