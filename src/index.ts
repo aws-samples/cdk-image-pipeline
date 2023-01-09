@@ -123,7 +123,7 @@ export class ImagePipeline extends Construct {
       });
     }
 
-    infrastructureConfig.addDependsOn(profile);
+    infrastructureConfig.addDependency(profile);
 
     const imageRecipe = new imagebuilder.CfnImageRecipe(this, 'ImageRecipe', {
       components: [],
