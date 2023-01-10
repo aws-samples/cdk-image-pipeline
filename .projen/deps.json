@@ -11,7 +11,7 @@
     },
     {
       "name": "@types/prettier",
-      "version": "2.6.0",
+      "version": "2.7.2",
       "type": "build"
     },
     {
@@ -30,7 +30,7 @@
     },
     {
       "name": "constructs",
-      "version": "10.0.5",
+      "version": "10.1.215",
       "type": "build"
     },
     {
@@ -107,7 +107,7 @@
     },
     {
       "name": "constructs",
-      "version": "^10.0.5",
+      "version": "^10.1.215",
       "type": "peer"
     }
   ],
