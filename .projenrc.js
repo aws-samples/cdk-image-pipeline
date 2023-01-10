@@ -2,7 +2,6 @@ const { awscdk } = require('projen');
 const project = new awscdk.AwsCdkConstructLibrary({
   author: 'Cameron Magee',
   authorAddress: 'magcamer@amazon.com',
-  // bundledDeps: ['minimist'],
   copyrightOwner: 'Amazon.com, Inc. or its affiliates. All Rights Reserved.',
   cdkVersion: '2.59.0',
   constructsVersion: '10.1.215',
