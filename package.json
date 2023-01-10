@@ -40,11 +40,11 @@
   "devDependencies": {
     "@types/jest": "^27.5.2",
     "@types/node": "^12",
-    "@types/prettier": "2.6.0",
+    "@types/prettier": "2.7.2",
     "@typescript-eslint/eslint-plugin": "^5",
     "@typescript-eslint/parser": "^5",
     "aws-cdk-lib": "2.59.0",
-    "constructs": "10.0.5",
+    "constructs": "10.1.215",
     "eslint": "^8",
     "eslint-import-resolver-node": "^0.3.6",
     "eslint-import-resolver-typescript": "^2.7.1",
@@ -64,7 +64,7 @@
   },
   "peerDependencies": {
     "aws-cdk-lib": "^2.59.0",
-    "constructs": "^10.0.5"
+    "constructs": "^10.1.215"
   },
   "keywords": [
     "cdk"
