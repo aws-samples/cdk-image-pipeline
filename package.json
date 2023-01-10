@@ -56,6 +56,7 @@
     "jsii-docgen": "^6.3.27",
     "jsii-pacmak": "^1.73.0",
     "json-schema": "^0.4.0",
+    "minimist": "1.2.7",
     "npm-check-updates": "^12",
     "projen": "^0.52.75",
     "standard-version": "^9",
@@ -66,12 +67,6 @@
     "aws-cdk-lib": "^2.59.0",
     "constructs": "^10.1.215"
   },
-  "dependencies": {
-    "minimist": "^1.2.7"
-  },
-  "bundledDependencies": [
-    "minimist"
-  ],
   "keywords": [
     "cdk"
   ],

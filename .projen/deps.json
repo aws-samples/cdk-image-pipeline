@@ -80,6 +80,11 @@
       "type": "build"
     },
     {
+      "name": "minimist",
+      "version": "1.2.7",
+      "type": "build"
+    },
+    {
       "name": "npm-check-updates",
       "version": "^12",
       "type": "build"
@@ -100,10 +105,6 @@
     {
       "name": "typescript",
       "type": "build"
-    },
-    {
-      "name": "minimist",
-      "type": "bundled"
     },
     {
       "name": "aws-cdk-lib",

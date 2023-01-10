@@ -264,25 +264,25 @@
       },
       "steps": [
         {
-          "exec": "npm-check-updates --dep dev --upgrade --target=minor --reject='@types/prettier,constructs,projen'"
+          "exec": "npm-check-updates --dep dev --upgrade --target=minor --reject='@types/prettier,constructs,minimist,projen'"
         },
         {
-          "exec": "npm-check-updates --dep optional --upgrade --target=minor --reject='@types/prettier,constructs,projen'"
+          "exec": "npm-check-updates --dep optional --upgrade --target=minor --reject='@types/prettier,constructs,minimist,projen'"
         },
         {
-          "exec": "npm-check-updates --dep peer --upgrade --target=minor --reject='@types/prettier,constructs,projen'"
+          "exec": "npm-check-updates --dep peer --upgrade --target=minor --reject='@types/prettier,constructs,minimist,projen'"
         },
         {
-          "exec": "npm-check-updates --dep prod --upgrade --target=minor --reject='@types/prettier,constructs,projen'"
+          "exec": "npm-check-updates --dep prod --upgrade --target=minor --reject='@types/prettier,constructs,minimist,projen'"
         },
         {
-          "exec": "npm-check-updates --dep bundle --upgrade --target=minor --reject='@types/prettier,constructs,projen'"
+          "exec": "npm-check-updates --dep bundle --upgrade --target=minor --reject='@types/prettier,constructs,minimist,projen'"
         },
         {
           "exec": "yarn install --check-files"
         },
         {
-          "exec": "yarn upgrade @types/jest @types/node @types/prettier @typescript-eslint/eslint-plugin @typescript-eslint/parser aws-cdk-lib constructs eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit jsii jsii-diff jsii-docgen jsii-pacmak json-schema npm-check-updates standard-version ts-jest typescript minimist aws-cdk-lib constructs"
+          "exec": "yarn upgrade @types/jest @types/node @types/prettier @typescript-eslint/eslint-plugin @typescript-eslint/parser aws-cdk-lib constructs eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint jest jest-junit jsii jsii-diff jsii-docgen jsii-pacmak json-schema minimist npm-check-updates standard-version ts-jest typescript aws-cdk-lib constructs"
         },
         {
           "exec": "npx projen"
