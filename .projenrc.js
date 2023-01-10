@@ -17,10 +17,11 @@ const project = new awscdk.AwsCdkConstructLibrary({
   license: 'MIT-0',
   pullRequestTemplateContents: ['# Fixes', ' ', ' ', 'By submitting this pull request, I confirm that you can use, modify, copy, and redistribute this contribution, under the terms of your choice.'],
   releaseToNpm: true,
-  devDeps: ['@types/prettier@2.7.2', 'minimist@1.2.7'],
+  devDeps: ['@types/prettier@2.7.2'],
 });
 
 project.addPeerDeps('aws-cdk-lib');
 project.addDevDeps('aws-cdk-lib');
+project.addDevDeps('projen@0.66.10');
 
 project.synth();
