@@ -66,6 +66,12 @@
     "aws-cdk-lib": "^2.59.0",
     "constructs": "^10.1.215"
   },
+  "dependencies": {
+    "minimist": "^1.2.7"
+  },
+  "bundledDependencies": [
+    "minimist"
+  ],
   "keywords": [
     "cdk"
   ],

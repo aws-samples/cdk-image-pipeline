@@ -102,6 +102,10 @@
       "type": "build"
     },
     {
+      "name": "minimist",
+      "type": "bundled"
+    },
+    {
       "name": "aws-cdk-lib",
       "type": "peer"
     },
