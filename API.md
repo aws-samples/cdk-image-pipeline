@@ -151,12 +151,14 @@ const imagePipelineProps: ImagePipelineProps = { ... }
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.parentImage">parentImage</a></code> | <code>string</code> | The source (parent) image that the image recipe uses as its base environment. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.pipelineName">pipelineName</a></code> | <code>string</code> | Name of the Image Pipeline. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.profileName">profileName</a></code> | <code>string</code> | Name of the instance profile that will be associated with the Instance Configuration. |
+| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.additionalPolicies">additionalPolicies</a></code> | <code>aws-cdk-lib.aws_iam.ManagedPolicy[]</code> | Additional policies to add to the instance profile associated with the Instance Configurations. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.email">email</a></code> | <code>string</code> | Email used to receive Image Builder Pipeline Notifications via SNS. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.imageRecipeVersion">imageRecipeVersion</a></code> | <code>string</code> | Image recipe version (Default: 0.0.1). |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.instanceTypes">instanceTypes</a></code> | <code>string[]</code> | List of instance types used in the Instance Configuration (Default: [ 't3.medium', 'm5.large', 'm5.xlarge' ]). |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.platform">platform</a></code> | <code>string</code> | Platform type Linux or Windows (Default: Linux). |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.securityGroups">securityGroups</a></code> | <code>string[]</code> | List of security group IDs for the Infrastructure Configuration. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.subnetId">subnetId</a></code> | <code>string</code> | Subnet ID for the Infrastructure Configuration. |
+| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.userDataScript">userDataScript</a></code> | <code>string</code> | UserData script that will override default one (if specified). |
 
 ---
 
@@ -272,6 +274,18 @@ Name of the instance profile that will be associated with the Instance Configura
 
 ---
 
+##### `additionalPolicies`<sup>Optional</sup> <a name="additionalPolicies" id="cdk-image-pipeline.ImagePipelineProps.property.additionalPolicies"></a>
+
+```typescript
+public readonly additionalPolicies: ManagedPolicy[];
+```
+
+- *Type:* aws-cdk-lib.aws_iam.ManagedPolicy[]
+
+Additional policies to add to the instance profile associated with the Instance Configurations.
+
+---
+
 ##### `email`<sup>Optional</sup> <a name="email" id="cdk-image-pipeline.ImagePipelineProps.property.email"></a>
 
 ```typescript
@@ -341,6 +355,18 @@ public readonly subnetId: string;
 - *Type:* string
 
 Subnet ID for the Infrastructure Configuration.
+
+---
+
+##### `userDataScript`<sup>Optional</sup> <a name="userDataScript" id="cdk-image-pipeline.ImagePipelineProps.property.userDataScript"></a>
+
+```typescript
+public readonly userDataScript: string;
+```
+
+- *Type:* string
+
+UserData script that will override default one (if specified).
 
 ---
 

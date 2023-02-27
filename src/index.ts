@@ -24,6 +24,10 @@ export interface ImagePipelineProps {
    */
   readonly profileName: string;
   /**
+   * Additional policies to add to the instance profile associated with the Instance Configurations
+   */
+  readonly additionalPolicies?: iam.ManagedPolicy[];
+  /**
    * Name of the Infrastructure Configuration for Image Builder
    */
   readonly infraConfigName: string;
@@ -31,6 +35,10 @@ export interface ImagePipelineProps {
    * Name of the Image Recipe
    */
   readonly imageRecipe: string;
+  /**
+   * UserData script that will override default one (if specified)
+   */
+  readonly userDataScript?: string;
   /**
    * Image recipe version (Default: 0.0.1)
    */
@@ -73,7 +81,8 @@ export class ImagePipeline extends Construct {
   imageRecipeComponents: imagebuilder.CfnImageRecipe.ComponentConfigurationProperty[];
   constructor(scope: Construct, id: string, props: ImagePipelineProps) {
     super(scope, id);
-    let infrastructureConfig = null;
+    let infrastructureConfig: imagebuilder.CfnInfrastructureConfiguration;
+    let imageRecipe: imagebuilder.CfnImageRecipe;
     this.imageRecipeComponents = [];
 
     // Construct code below
@@ -97,6 +106,11 @@ export class ImagePipeline extends Construct {
     role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('EC2InstanceProfileForImageBuilder'));
     role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('EC2InstanceProfileForImageBuilderECRContainerBuilds'));
     role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'));
+    if (typeof props.additionalPolicies !== 'undefined' && props.additionalPolicies.length >= 1) {
+      for (const policy of props.additionalPolicies) {
+        role.addManagedPolicy(policy);
+      }
+    }
 
     const profile = new iam.CfnInstanceProfile(this, 'InstanceProfile', {
       roles: [role.roleName],
@@ -125,12 +139,27 @@ export class ImagePipeline extends Construct {
 
     infrastructureConfig.addDependency(profile);
 
-    const imageRecipe = new imagebuilder.CfnImageRecipe(this, 'ImageRecipe', {
-      components: [],
-      name: props.imageRecipe,
-      parentImage: props.parentImage,
-      version: props.imageRecipeVersion ?? '0.0.1',
-    });
+    /**
+     * Only add overridding UserData script if it is given
+     */
+    if (props.userDataScript?.trim() === '') {
+      imageRecipe = new imagebuilder.CfnImageRecipe(this, 'ImageRecipe', {
+        components: [],
+        name: props.imageRecipe,
+        parentImage: props.parentImage,
+        version: props.imageRecipeVersion ?? '0.0.1',
+      });
+    } else {
+      imageRecipe = new imagebuilder.CfnImageRecipe(this, 'ImageRecipe', {
+        components: [],
+        name: props.imageRecipe,
+        parentImage: props.parentImage,
+        version: props.imageRecipeVersion ?? '0.0.1',
+        additionalInstanceConfiguration: {
+          userDataOverride: props.userDataScript,
+        },
+      });
+    }
 
     props.componentDocuments.forEach((document, index) => {
       let component = new imagebuilder.CfnComponent(this, props.componentNames[index], {
