@@ -31,6 +31,28 @@ const propsWithNetworking: ImagePipelineProps = {
   subnetId: 'subnet-12345678',
 };
 
+const propsWithVolumeConfig: ImagePipelineProps = {
+  componentDocuments: ['test/test_component_example.yml'],
+  componentNames: ['TestComponent'],
+  componentVersions: ['1.0.0'],
+  profileName: 'TestProfile',
+  infraConfigName: 'TestInfrastructureConfig',
+  imageRecipe: 'TestImageRecipe',
+  pipelineName: 'TestImagePipeline',
+  parentImage: 'ami-04505e74c0741db8d', // Ubuntu Server 20.04 LTS
+  kmsKeyAlias: 'alias/app1/key',
+  securityGroups: ['sg-12345678'],
+  subnetId: 'subnet-12345678',
+  ebsVolumeConfiguration: {
+    encrypted: true,
+    iops: 200,
+    kmsKeyId: 'alias/app1/key',
+    volumeSize: 20,
+    volumeType: 'gp3',
+    throughput: 1000,
+  },
+};
+
 beforeAll(() => {
   process.env.CDK_DEFAULT_ACCOUNT = '123456789012';
   process.env.CDK_DEFAULT_REGION = 'us-east-1';
@@ -89,6 +111,41 @@ test('Infrastructure Configuration is built with provided Networking properties'
   const templateWithNetworking = Template.fromStack(testStack);
 
   templateWithNetworking.hasResourceProperties('AWS::ImageBuilder::InfrastructureConfiguration', {
+    InstanceProfileName: props.profileName,
+    Name: props.infraConfigName,
+    SnsTopicArn: Match.anyValue(),
+    SecurityGroupIds: ['sg-12345678'],
+    SubnetId: 'subnet-12345678',
+  });
+});
+
+test('Infrastructure Configuration is built with provided EBS volume properties', () => {
+  const app = new cdk.App();
+  const testStack = new cdk.Stack(app, 'testStack', {
+    env: {
+      account: process.env.CDK_DEFAULT_ACCOUNT,
+      region: process.env.CDK_DEFAULT_REGION,
+    },
+  });
+  new ImagePipeline(testStack, 'ImagePipelineStack', propsWithVolumeConfig);
+  const templateWithVolume = Template.fromStack(testStack);
+
+  templateWithVolume.hasResourceProperties('AWS::ImageBuilder::ImageRecipe', {
+    Name: 'TestImageRecipe',
+    BlockDeviceMappings: [
+      {
+        Ebs: {
+          Encrypted: true,
+          Iops: 200,
+          KmsKeyId: 'alias/app1/key',
+          VolumeSize: 20,
+          VolumeType: 'gp3',
+          Throughput: 1000,
+        },
+      },
+    ],
+  });
+  templateWithVolume.hasResourceProperties('AWS::ImageBuilder::InfrastructureConfiguration', {
     InstanceProfileName: props.profileName,
     Name: props.infraConfigName,
     SnsTopicArn: Match.anyValue(),
