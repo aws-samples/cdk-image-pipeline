@@ -37,6 +37,8 @@ export interface ImagePipelineProps {
   readonly imageRecipe: string;
   /**
    * UserData script that will override default one (if specified)
+   *
+   * @default - none
    */
   readonly userDataScript?: string;
   /**
@@ -75,6 +77,10 @@ export interface ImagePipelineProps {
    * Subnet ID for the Infrastructure Configuration
    */
   readonly subnetId?: string;
+  /**
+   * Configuration for the AMI's EBS volume
+   */
+  readonly ebsVolumeConfiguration?: imagebuilder.CfnImageRecipe.EbsInstanceBlockDeviceSpecificationProperty;
 }
 
 export class ImagePipeline extends Construct {
@@ -140,26 +146,24 @@ export class ImagePipeline extends Construct {
     infrastructureConfig.addDependency(profile);
 
     /**
-     * Only add overridding UserData script if it is given
+     * Image recipe configuration
+     * UserData and EBS volume config are set to nothing if they are not given
      */
-    if (props.userDataScript?.trim() === '') {
-      imageRecipe = new imagebuilder.CfnImageRecipe(this, 'ImageRecipe', {
-        components: [],
-        name: props.imageRecipe,
-        parentImage: props.parentImage,
-        version: props.imageRecipeVersion ?? '0.0.1',
-      });
-    } else {
-      imageRecipe = new imagebuilder.CfnImageRecipe(this, 'ImageRecipe', {
-        components: [],
-        name: props.imageRecipe,
-        parentImage: props.parentImage,
-        version: props.imageRecipeVersion ?? '0.0.1',
-        additionalInstanceConfiguration: {
-          userDataOverride: props.userDataScript,
-        },
-      });
-    }
+    const userDataOverrideScript = props.userDataScript ?? '';
+    const ebsVolumeConfig = props.ebsVolumeConfiguration ?? {};
+    imageRecipe = new imagebuilder.CfnImageRecipe(this, 'ImageRecipe', {
+      components: [],
+      name: props.imageRecipe,
+      parentImage: props.parentImage,
+      version: props.imageRecipeVersion ?? '0.0.1',
+      additionalInstanceConfiguration: {
+        userDataOverride: userDataOverrideScript,
+      },
+      blockDeviceMappings: [{
+        ebs: ebsVolumeConfig,
+      }],
+    });
+
 
     props.componentDocuments.forEach((document, index) => {
       let component = new imagebuilder.CfnComponent(this, props.componentNames[index], {
