@@ -1,9 +1,11 @@
 import { readFileSync } from 'fs';
-import * as iam from 'aws-cdk-lib/aws-iam';
-import * as imagebuilder from 'aws-cdk-lib/aws-imagebuilder';
-import * as kms from 'aws-cdk-lib/aws-kms';
-import * as sns from 'aws-cdk-lib/aws-sns';
-import * as subscriptions from 'aws-cdk-lib/aws-sns-subscriptions';
+import {
+  aws_iam as iam,
+  aws_imagebuilder as imagebuilder,
+  aws_kms as kms,
+  aws_sns as sns,
+  aws_sns_subscriptions as subscriptions,
+} from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 
 export interface ImagePipelineProps {
@@ -147,23 +149,31 @@ export class ImagePipeline extends Construct {
 
     /**
      * Image recipe configuration
-     * UserData and EBS volume config are set to nothing if they are not given
      */
-    const userDataOverrideScript = props.userDataScript ?? '';
-    const ebsVolumeConfig = props.ebsVolumeConfiguration ?? {};
-    imageRecipe = new imagebuilder.CfnImageRecipe(this, 'ImageRecipe', {
+    let imageRecipeProps: imagebuilder.CfnImageRecipeProps;
+    imageRecipeProps = {
       components: [],
       name: props.imageRecipe,
       parentImage: props.parentImage,
       version: props.imageRecipeVersion ?? '0.0.1',
-      additionalInstanceConfiguration: {
-        userDataOverride: userDataOverrideScript,
-      },
-      blockDeviceMappings: [{
-        ebs: ebsVolumeConfig,
-      }],
-    });
-
+    };
+    if (props.userDataScript) {
+      imageRecipeProps = {
+        ...imageRecipeProps,
+        additionalInstanceConfiguration: {
+          userDataOverride: props.userDataScript,
+        },
+      };
+    };
+    if (props.ebsVolumeConfiguration) {
+      imageRecipeProps = {
+        ...imageRecipeProps,
+        blockDeviceMappings: [{
+          ebs: props.ebsVolumeConfiguration,
+        }],
+      };
+    }
+    imageRecipe = new imagebuilder.CfnImageRecipe(this, 'ImageRecipe', imageRecipeProps);
 
     props.componentDocuments.forEach((document, index) => {
       let component = new imagebuilder.CfnComponent(this, props.componentNames[index], {
