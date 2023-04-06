@@ -83,6 +83,10 @@ export interface ImagePipelineProps {
    * Configuration for the AMI's EBS volume
    */
   readonly ebsVolumeConfiguration?: imagebuilder.CfnImageRecipe.EbsInstanceBlockDeviceSpecificationProperty;
+  /**
+   * Name of the AMI's EBS volume
+   */
+  readonly ebsVolumeName?: string;
 }
 
 export class ImagePipeline extends Construct {
@@ -165,10 +169,11 @@ export class ImagePipeline extends Construct {
         },
       };
     };
-    if (props.ebsVolumeConfiguration) {
+    if (props.ebsVolumeConfiguration && props.ebsVolumeName) {
       imageRecipeProps = {
         ...imageRecipeProps,
         blockDeviceMappings: [{
+          deviceName: props.ebsVolumeName,
           ebs: props.ebsVolumeConfiguration,
         }],
       };
