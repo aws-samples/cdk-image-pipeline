@@ -43,6 +43,7 @@ const propsWithVolumeConfig: ImagePipelineProps = {
   kmsKeyAlias: 'alias/app1/key',
   securityGroups: ['sg-12345678'],
   subnetId: 'subnet-12345678',
+  ebsVolumeName: '/dev/xvda',
   ebsVolumeConfiguration: {
     encrypted: true,
     iops: 200,
@@ -134,6 +135,7 @@ test('Infrastructure Configuration is built with provided EBS volume properties'
     Name: 'TestImageRecipe',
     BlockDeviceMappings: [
       {
+        DeviceName: '/dev/xvda',
         Ebs: {
           Encrypted: true,
           Iops: 200,

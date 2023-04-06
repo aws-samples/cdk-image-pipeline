@@ -153,6 +153,7 @@ const imagePipelineProps: ImagePipelineProps = { ... }
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.profileName">profileName</a></code> | <code>string</code> | Name of the instance profile that will be associated with the Instance Configuration. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.additionalPolicies">additionalPolicies</a></code> | <code>aws-cdk-lib.aws_iam.ManagedPolicy[]</code> | Additional policies to add to the instance profile associated with the Instance Configurations. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.ebsVolumeConfiguration">ebsVolumeConfiguration</a></code> | <code>aws-cdk-lib.aws_imagebuilder.CfnImageRecipe.EbsInstanceBlockDeviceSpecificationProperty</code> | Configuration for the AMI's EBS volume. |
+| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.ebsVolumeName">ebsVolumeName</a></code> | <code>string</code> | Name of the AMI's EBS volume. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.email">email</a></code> | <code>string</code> | Email used to receive Image Builder Pipeline Notifications via SNS. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.imageRecipeVersion">imageRecipeVersion</a></code> | <code>string</code> | Image recipe version (Default: 0.0.1). |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.instanceTypes">instanceTypes</a></code> | <code>string[]</code> | List of instance types used in the Instance Configuration (Default: [ 't3.medium', 'm5.large', 'm5.xlarge' ]). |
@@ -296,6 +297,18 @@ public readonly ebsVolumeConfiguration: EbsInstanceBlockDeviceSpecificationPrope
 - *Type:* aws-cdk-lib.aws_imagebuilder.CfnImageRecipe.EbsInstanceBlockDeviceSpecificationProperty
 
 Configuration for the AMI's EBS volume.
+
+---
+
+##### `ebsVolumeName`<sup>Optional</sup> <a name="ebsVolumeName" id="cdk-image-pipeline.ImagePipelineProps.property.ebsVolumeName"></a>
+
+```typescript
+public readonly ebsVolumeName: string;
+```
+
+- *Type:* string
+
+Name of the AMI's EBS volume.
 
 ---
 
