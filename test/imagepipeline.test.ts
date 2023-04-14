@@ -15,6 +15,9 @@ const props: ImagePipelineProps = {
   parentImage: 'ami-04505e74c0741db8d', // Ubuntu Server 20.04 LTS
   kmsKeyAlias: 'alias/app1/key',
   email: 'unit@test.com',
+  enableVulnScans: true,
+  vulnScansRepoName: 'image-builder-vuln-scans',
+  vulnScansRepoTags: ['al2-x86-base'],
 };
 
 const propsWithNetworking: ImagePipelineProps = {
@@ -156,6 +159,7 @@ test('Infrastructure Configuration is built with provided EBS volume properties'
   });
 });
 
+
 test('Infrastructure Configuration contains required properties', () => {
   template.hasResourceProperties('AWS::ImageBuilder::InfrastructureConfiguration', {
     InstanceProfileName: props.profileName,
@@ -176,6 +180,17 @@ test('Image Recipe is created', () => {
   template.resourceCountIs('AWS::ImageBuilder::ImageRecipe', 1);
 });
 
-test('Image Pipeline is created', () => {
+test('Image Pipeline has Inspector vulnerability scans configured', () => {
   template.resourceCountIs('AWS::ImageBuilder::ImagePipeline', 1);
+  template.hasResourceProperties('AWS::ImageBuilder::ImagePipeline', {
+    ImageScanningConfiguration: {
+      ImageScanningEnabled: true,
+      EcrConfiguration: {
+        RepositoryName: 'image-builder-vuln-scans',
+        ContainerTags: [
+          'al2-x86-base',
+        ],
+      },
+    },
+  });
 });

@@ -155,12 +155,15 @@ const imagePipelineProps: ImagePipelineProps = { ... }
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.ebsVolumeConfiguration">ebsVolumeConfiguration</a></code> | <code>aws-cdk-lib.aws_imagebuilder.CfnImageRecipe.EbsInstanceBlockDeviceSpecificationProperty</code> | Configuration for the AMI's EBS volume. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.ebsVolumeName">ebsVolumeName</a></code> | <code>string</code> | Name of the AMI's EBS volume. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.email">email</a></code> | <code>string</code> | Email used to receive Image Builder Pipeline Notifications via SNS. |
+| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.enableVulnScans">enableVulnScans</a></code> | <code>boolean</code> | Set to true if you want to enable continuous vulnerability scans through AWS Inpector. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.imageRecipeVersion">imageRecipeVersion</a></code> | <code>string</code> | Image recipe version (Default: 0.0.1). |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.instanceTypes">instanceTypes</a></code> | <code>string[]</code> | List of instance types used in the Instance Configuration (Default: [ 't3.medium', 'm5.large', 'm5.xlarge' ]). |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.platform">platform</a></code> | <code>string</code> | Platform type Linux or Windows (Default: Linux). |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.securityGroups">securityGroups</a></code> | <code>string[]</code> | List of security group IDs for the Infrastructure Configuration. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.subnetId">subnetId</a></code> | <code>string</code> | Subnet ID for the Infrastructure Configuration. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.userDataScript">userDataScript</a></code> | <code>string</code> | UserData script that will override default one (if specified). |
+| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.vulnScansRepoName">vulnScansRepoName</a></code> | <code>string</code> | Store vulnerability scans through AWS Inpsector in ECR using this repo name (if option is enabled). |
+| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.vulnScansRepoTags">vulnScansRepoTags</a></code> | <code>string[]</code> | Store vulnerability scans through AWS Inpsector in ECR using these image tags (if option is enabled). |
 
 ---
 
@@ -324,6 +327,18 @@ Email used to receive Image Builder Pipeline Notifications via SNS.
 
 ---
 
+##### `enableVulnScans`<sup>Optional</sup> <a name="enableVulnScans" id="cdk-image-pipeline.ImagePipelineProps.property.enableVulnScans"></a>
+
+```typescript
+public readonly enableVulnScans: boolean;
+```
+
+- *Type:* boolean
+
+Set to true if you want to enable continuous vulnerability scans through AWS Inpector.
+
+---
+
 ##### `imageRecipeVersion`<sup>Optional</sup> <a name="imageRecipeVersion" id="cdk-image-pipeline.ImagePipelineProps.property.imageRecipeVersion"></a>
 
 ```typescript
@@ -394,6 +409,30 @@ public readonly userDataScript: string;
 - *Default:* none
 
 UserData script that will override default one (if specified).
+
+---
+
+##### `vulnScansRepoName`<sup>Optional</sup> <a name="vulnScansRepoName" id="cdk-image-pipeline.ImagePipelineProps.property.vulnScansRepoName"></a>
+
+```typescript
+public readonly vulnScansRepoName: string;
+```
+
+- *Type:* string
+
+Store vulnerability scans through AWS Inpsector in ECR using this repo name (if option is enabled).
+
+---
+
+##### `vulnScansRepoTags`<sup>Optional</sup> <a name="vulnScansRepoTags" id="cdk-image-pipeline.ImagePipelineProps.property.vulnScansRepoTags"></a>
+
+```typescript
+public readonly vulnScansRepoTags: string[];
+```
+
+- *Type:* string[]
+
+Store vulnerability scans through AWS Inpsector in ECR using these image tags (if option is enabled).
 
 ---
 

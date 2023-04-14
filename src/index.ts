@@ -87,6 +87,18 @@ export interface ImagePipelineProps {
    * Name of the AMI's EBS volume
    */
   readonly ebsVolumeName?: string;
+  /**
+   * Set to true if you want to enable continuous vulnerability scans through AWS Inpector
+   */
+  readonly enableVulnScans?: boolean;
+  /**
+   * Store vulnerability scans through AWS Inpsector in ECR using this repo name (if option is enabled)
+   */
+  readonly vulnScansRepoName?: string;
+  /**
+   * Store vulnerability scans through AWS Inpsector in ECR using these image tags (if option is enabled)
+   */
+  readonly vulnScansRepoTags?: string[];
 }
 
 export class ImagePipeline extends Construct {
@@ -193,13 +205,25 @@ export class ImagePipeline extends Construct {
       imageRecipe.components = this.imageRecipeComponents;
     });
 
-
-    new imagebuilder.CfnImagePipeline(this, 'ImagePipeline', {
+    let imagePipelineProps: imagebuilder.CfnImagePipelineProps;
+    imagePipelineProps = {
       infrastructureConfigurationArn: infrastructureConfig.attrArn,
       name: props.pipelineName,
       description: 'A sample image pipeline',
       imageRecipeArn: imageRecipe.attrArn,
-    });
-
+    };
+    if (props.enableVulnScans) {
+      imagePipelineProps = {
+        ...imagePipelineProps,
+        imageScanningConfiguration: {
+          imageScanningEnabled: props.enableVulnScans,
+          ecrConfiguration: {
+            repositoryName: props.vulnScansRepoName,
+            containerTags: props.vulnScansRepoTags,
+          },
+        },
+      };
+    }
+    new imagebuilder.CfnImagePipeline(this, 'ImagePipeline', imagePipelineProps);
   }
 }
