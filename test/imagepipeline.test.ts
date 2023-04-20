@@ -55,6 +55,9 @@ const propsWithVolumeConfig: ImagePipelineProps = {
     volumeType: 'gp3',
     throughput: 1000,
   },
+  enableCrossAccountDistribution: true,
+  distributionAccountIDs: ['111222333444', '222444666888'],
+  distributionRegions: ['us-east-1', 'us-west-2'],
 };
 
 beforeAll(() => {
@@ -156,6 +159,10 @@ test('Infrastructure Configuration is built with provided EBS volume properties'
     SnsTopicArn: Match.anyValue(),
     SecurityGroupIds: ['sg-12345678'],
     SubnetId: 'subnet-12345678',
+  });
+  templateWithVolume.hasResourceProperties('AWS::ImageBuilder::DistributionConfiguration', {
+    Name: 'TestImageRecipe-distribution-config',
+    Description: 'Cross account distribution settings for TestImageRecipe',
   });
 });
 

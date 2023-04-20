@@ -152,9 +152,12 @@ const imagePipelineProps: ImagePipelineProps = { ... }
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.pipelineName">pipelineName</a></code> | <code>string</code> | Name of the Image Pipeline. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.profileName">profileName</a></code> | <code>string</code> | Name of the instance profile that will be associated with the Instance Configuration. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.additionalPolicies">additionalPolicies</a></code> | <code>aws-cdk-lib.aws_iam.ManagedPolicy[]</code> | Additional policies to add to the instance profile associated with the Instance Configurations. |
+| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.distributionAccountIDs">distributionAccountIDs</a></code> | <code>string[]</code> | List of accounts to copy this AMI to, if the option to do so is enabled. |
+| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.distributionRegions">distributionRegions</a></code> | <code>string[]</code> | List of regions to copy this AMI to, if the option to do so is enabled. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.ebsVolumeConfiguration">ebsVolumeConfiguration</a></code> | <code>aws-cdk-lib.aws_imagebuilder.CfnImageRecipe.EbsInstanceBlockDeviceSpecificationProperty</code> | Configuration for the AMI's EBS volume. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.ebsVolumeName">ebsVolumeName</a></code> | <code>string</code> | Name of the AMI's EBS volume. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.email">email</a></code> | <code>string</code> | Email used to receive Image Builder Pipeline Notifications via SNS. |
+| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.enableCrossAccountDistribution">enableCrossAccountDistribution</a></code> | <code>boolean</code> | Set to true if you want to copy this AMI to other accounts using a Distribution Configuration. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.enableVulnScans">enableVulnScans</a></code> | <code>boolean</code> | Set to true if you want to enable continuous vulnerability scans through AWS Inpector. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.imageRecipeVersion">imageRecipeVersion</a></code> | <code>string</code> | Image recipe version (Default: 0.0.1). |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.instanceTypes">instanceTypes</a></code> | <code>string[]</code> | List of instance types used in the Instance Configuration (Default: [ 't3.medium', 'm5.large', 'm5.xlarge' ]). |
@@ -291,6 +294,30 @@ Additional policies to add to the instance profile associated with the Instance 
 
 ---
 
+##### `distributionAccountIDs`<sup>Optional</sup> <a name="distributionAccountIDs" id="cdk-image-pipeline.ImagePipelineProps.property.distributionAccountIDs"></a>
+
+```typescript
+public readonly distributionAccountIDs: string[];
+```
+
+- *Type:* string[]
+
+List of accounts to copy this AMI to, if the option to do so is enabled.
+
+---
+
+##### `distributionRegions`<sup>Optional</sup> <a name="distributionRegions" id="cdk-image-pipeline.ImagePipelineProps.property.distributionRegions"></a>
+
+```typescript
+public readonly distributionRegions: string[];
+```
+
+- *Type:* string[]
+
+List of regions to copy this AMI to, if the option to do so is enabled.
+
+---
+
 ##### `ebsVolumeConfiguration`<sup>Optional</sup> <a name="ebsVolumeConfiguration" id="cdk-image-pipeline.ImagePipelineProps.property.ebsVolumeConfiguration"></a>
 
 ```typescript
@@ -324,6 +351,18 @@ public readonly email: string;
 - *Type:* string
 
 Email used to receive Image Builder Pipeline Notifications via SNS.
+
+---
+
+##### `enableCrossAccountDistribution`<sup>Optional</sup> <a name="enableCrossAccountDistribution" id="cdk-image-pipeline.ImagePipelineProps.property.enableCrossAccountDistribution"></a>
+
+```typescript
+public readonly enableCrossAccountDistribution: boolean;
+```
+
+- *Type:* boolean
+
+Set to true if you want to copy this AMI to other accounts using a Distribution Configuration.
 
 ---
 

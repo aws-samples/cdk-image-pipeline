@@ -99,6 +99,18 @@ export interface ImagePipelineProps {
    * Store vulnerability scans through AWS Inpsector in ECR using these image tags (if option is enabled)
    */
   readonly vulnScansRepoTags?: string[];
+  /**
+   * Set to true if you want to copy this AMI to other accounts using a Distribution Configuration
+   */
+  readonly enableCrossAccountDistribution?: boolean;
+  /**
+   * List of accounts to copy this AMI to, if the option to do so is enabled
+   */
+  readonly distributionAccountIDs?: string[];
+  /**
+   * List of regions to copy this AMI to, if the option to do so is enabled
+   */
+  readonly distributionRegions?: string[];
 }
 
 export class ImagePipeline extends Construct {
@@ -222,6 +234,29 @@ export class ImagePipeline extends Construct {
             containerTags: props.vulnScansRepoTags,
           },
         },
+      };
+    }
+    if (props.enableCrossAccountDistribution) {
+      const distributionsList: imagebuilder.CfnDistributionConfiguration.DistributionProperty[] = [];
+      props.distributionRegions?.forEach(distributionRegion => {
+        const distributionConfig: any = {
+          region: distributionRegion,
+          amiDistributionConfiguration: {
+            name: `${props.imageRecipe}-${distributionRegion}`,
+            description: `copy AMI ${props.imageRecipe} to ${distributionRegion}`,
+            targetAccountIds: props.distributionAccountIDs,
+          },
+        };
+        distributionsList.push(distributionConfig);
+      });
+      const amiDistributionConfiguration = new imagebuilder.CfnDistributionConfiguration(this, 'amiDistributionConfiguration', {
+        name: `${props.imageRecipe}-distribution-config`,
+        description: `Cross account distribution settings for ${props.imageRecipe}`,
+        distributions: distributionsList,
+      });
+      imagePipelineProps = {
+        ...imagePipelineProps,
+        distributionConfigurationArn: amiDistributionConfiguration.attrArn,
       };
     }
     new imagebuilder.CfnImagePipeline(this, 'ImagePipeline', imagePipelineProps);
