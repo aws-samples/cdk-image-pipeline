@@ -56,8 +56,8 @@ const propsWithVolumeConfig: ImagePipelineProps = {
     throughput: 1000,
   },
   enableCrossAccountDistribution: true,
-  distributionAccountIDs: ['111222333444', '222444666888'],
-  distributionRegions: ['us-east-1', 'us-west-2'],
+  distributionAccountIDs: ['111222333444'],
+  distributionRegions: ['us-east-1'],
 };
 
 beforeAll(() => {
@@ -163,6 +163,14 @@ test('Infrastructure Configuration is built with provided EBS volume properties'
   templateWithVolume.hasResourceProperties('AWS::ImageBuilder::DistributionConfiguration', {
     Name: 'TestImageRecipe-distribution-config',
     Description: 'Cross account distribution settings for TestImageRecipe',
+    Distributions: [{
+      Region: 'us-east-1',
+      AmiDistributionConfiguration: {
+        Name: 'TestImageRecipe-us-east-1-{{imagebuilder:buildDate}}',
+        Description: 'copy AMI TestImageRecipe to us-east-1',
+        TargetAccountIds: ['111222333444'],
+      },
+    }],
   });
 });
 
