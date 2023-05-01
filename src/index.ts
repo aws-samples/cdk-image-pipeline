@@ -242,9 +242,11 @@ export class ImagePipeline extends Construct {
         const distributionConfig: any = {
           region: distributionRegion,
           amiDistributionConfiguration: {
-            name: `${props.imageRecipe}-${distributionRegion}`,
-            description: `copy AMI ${props.imageRecipe} to ${distributionRegion}`,
-            targetAccountIds: props.distributionAccountIDs,
+            //Capital case here because it's an object of type any, but capital case is what is expected in CloudFormation
+            //https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-imagebuilder-distributionconfiguration-amidistributionconfiguration.html
+            Name: `${props.imageRecipe}-${distributionRegion}-{{imagebuilder:buildDate}}`,
+            Description: `copy AMI ${props.imageRecipe} to ${distributionRegion}`,
+            TargetAccountIds: props.distributionAccountIDs,
           },
         };
         distributionsList.push(distributionConfig);
