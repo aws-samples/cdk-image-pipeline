@@ -247,6 +247,9 @@ export class ImagePipeline extends Construct {
             Name: `${props.imageRecipe}-${distributionRegion}-{{imagebuilder:buildDate}}`,
             Description: `copy AMI ${props.imageRecipe} to ${distributionRegion}`,
             TargetAccountIds: props.distributionAccountIDs,
+            LaunchPermissionConfiguration: {
+              UserIds: props.distributionAccountIDs,
+            },
           },
         };
         distributionsList.push(distributionConfig);
