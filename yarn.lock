@@ -4747,7 +4747,7 @@ npm-bundled@^3.0.0:
   dependencies:
     npm-normalize-package-bin "^3.0.0"
 
-npm-check-updates@^16:
+npm-check-updates@^16.10.10:
   version "16.10.10"
   resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-16.10.10.tgz#1d1ee7881295b5c93f78a1999e7854d998938647"
   integrity sha512-QO8gsUJRPTUltu3MqyUVgJDgG7H+oyKnpMJ5JRG40tLTPd0s6AI18gGBtq8RZiAQTeVbNkWu7C8gOEJgl3goBw==
