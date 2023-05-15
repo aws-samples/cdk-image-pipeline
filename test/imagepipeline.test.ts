@@ -169,9 +169,7 @@ test('Infrastructure Configuration is built with provided EBS volume properties'
         Name: 'TestImageRecipe-us-east-1-{{imagebuilder:buildDate}}',
         Description: 'copy AMI TestImageRecipe to us-east-1',
         TargetAccountIds: ['111222333444'],
-        LaunchPermissionConfiguration: {
-          UserIds: ['111222333444'],
-        },
+        KmsKeyId: 'alias/app1/key',
       },
     }],
   });
