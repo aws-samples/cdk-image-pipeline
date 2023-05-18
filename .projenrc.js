@@ -22,6 +22,6 @@ const project = new awscdk.AwsCdkConstructLibrary({
 
 project.addPeerDeps('aws-cdk-lib');
 project.addDevDeps('aws-cdk-lib');
-project.addDevDeps('projen@0.66.10');
+project.addDevDeps('projen@0.71.62');
 
 project.synth();
