@@ -5,7 +5,7 @@ import { ImagePipeline, ImagePipelineProps } from '../src';
 let template: Template;
 
 const props: ImagePipelineProps = {
-    components: [
+  components: [
     {
       document: 'test/test_component_example.yml',
       name: 'TestComponent',
