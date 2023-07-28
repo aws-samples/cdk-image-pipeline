@@ -1,11 +1,15 @@
 import { readFileSync } from 'fs';
+import * as path from 'path';
 import {
   aws_iam as iam,
   aws_imagebuilder as imagebuilder,
   aws_kms as kms,
   aws_sns as sns,
   aws_sns_subscriptions as subscriptions,
+  aws_lambda as lambda,
+  Stack,
 } from 'aws-cdk-lib';
+import { SnsEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
 import { Construct } from 'constructs';
 
 export interface ImagePipelineProps {
@@ -111,6 +115,10 @@ export interface ImagePipelineProps {
    * List of regions to copy this AMI to, if the option to do so is enabled
    */
   readonly distributionRegions?: string[];
+  /**
+   * Parameter Store path to store latest AMI ID under
+   */
+  readonly amiIdSsmPath?: string;
 }
 
 export class ImagePipeline extends Construct {
@@ -264,6 +272,46 @@ export class ImagePipeline extends Construct {
         ...imagePipelineProps,
         distributionConfigurationArn: amiDistributionConfiguration.attrArn,
       };
+    }
+
+    /**
+     * Create Lambda to add latest built image's ID to Parameter Store
+     * (only if a Parameter Store path is provided)
+     */
+    if (props.amiIdSsmPath) {
+      const amiSsmUpdateLambdaPolicy = new iam.PolicyDocument({
+        statements: [
+          new iam.PolicyStatement({
+            resources: [`arn:aws:ssm:${Stack.of(this).account}:${Stack.of(this).region}:parameter/${props.amiIdSsmPath}`],
+            actions: [
+              'ssm:PutParameter',
+              'ssm:GetParameterHistory',
+              'ssm:GetParameter',
+              'ssm:AddTagsToResource',
+            ],
+          }),
+        ],
+      });
+      const amiSsmUpdateLambdaRole = new iam.Role(this, `${props.imageRecipe}UpdateLambdaRole`, {
+        assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+        managedPolicies: [
+          iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
+        ],
+        inlinePolicies: {
+          AmiSsmUpdateLambdaPolicy: amiSsmUpdateLambdaPolicy,
+        },
+      });
+      const amiSsmUpdateLambda = new lambda.Function(this, `${props.imageRecipe}UpdateLambda`, {
+        runtime: lambda.Runtime.PYTHON_3_10,
+        code: lambda.Code.fromAsset(path.join(__dirname, '../assets/image-builder-update-lambda')),
+        handler: 'image-builder-lambda-update-ssm.lambda_handler',
+        role: amiSsmUpdateLambdaRole,
+        environment: {
+          SSM_PATH: props.amiIdSsmPath,
+        },
+        memorySize: 256,
+      });
+      amiSsmUpdateLambda.addEventSource(new SnsEventSource(topic, {}));
     }
     new imagebuilder.CfnImagePipeline(this, 'ImagePipeline', imagePipelineProps);
   }

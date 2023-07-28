@@ -18,6 +18,7 @@ const props: ImagePipelineProps = {
   enableVulnScans: true,
   vulnScansRepoName: 'image-builder-vuln-scans',
   vulnScansRepoTags: ['al2-x86-base'],
+  amiIdSsmPath: '/ec2-image-builder/al2-x86',
 };
 
 const propsWithNetworking: ImagePipelineProps = {
@@ -78,8 +79,12 @@ test('Infrastructure Configuration SNS topic is created', () => {
   template.resourceCountIs('AWS::SNS::Topic', 1);
 });
 
+test('Infrastructure Configuration creates Lambda function for adding AMI ID to SSM', () => {
+  template.resourceCountIs('AWS::Lambda::Function', 1);
+});
+
 test('Given an email address, an SNS Subscription should be created', () => {
-  template.resourceCountIs('AWS::SNS::Subscription', 1);
+  template.resourceCountIs('AWS::SNS::Subscription', 2); //2 because of the SSM update Lambda
   template.hasResourceProperties('AWS::SNS::Subscription', {
     Protocol: 'email',
     Endpoint: 'unit@test.com',
@@ -91,7 +96,7 @@ test('Infrastructure Configuration is created', () => {
 });
 
 test('Infrastructure Configuration IAM Role and Instance Profile are created', () => {
-  template.resourceCountIs('AWS::IAM::Role', 1);
+  template.resourceCountIs('AWS::IAM::Role', 2); //2 because of the SSM update Lambda
   template.resourceCountIs('AWS::IAM::InstanceProfile', 1);
 });
 
@@ -105,6 +110,7 @@ test('Infrastructure Configuration has the default instance types', () => {
     InstanceTypes: ['t3.medium', 'm5.large', 'm5.xlarge'],
   });
 });
+
 
 test('Infrastructure Configuration is built with provided Networking properties', () => {
   const app = new cdk.App();
