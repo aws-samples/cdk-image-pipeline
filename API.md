@@ -152,6 +152,7 @@ const imagePipelineProps: ImagePipelineProps = { ... }
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.pipelineName">pipelineName</a></code> | <code>string</code> | Name of the Image Pipeline. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.profileName">profileName</a></code> | <code>string</code> | Name of the instance profile that will be associated with the Instance Configuration. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.additionalPolicies">additionalPolicies</a></code> | <code>aws-cdk-lib.aws_iam.ManagedPolicy[]</code> | Additional policies to add to the instance profile associated with the Instance Configurations. |
+| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.amiIdSsmPath">amiIdSsmPath</a></code> | <code>string</code> | Parameter Store path to store latest AMI ID under. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.distributionAccountIDs">distributionAccountIDs</a></code> | <code>string[]</code> | List of accounts to copy this AMI to, if the option to do so is enabled. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.distributionRegions">distributionRegions</a></code> | <code>string[]</code> | List of regions to copy this AMI to, if the option to do so is enabled. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.ebsVolumeConfiguration">ebsVolumeConfiguration</a></code> | <code>aws-cdk-lib.aws_imagebuilder.CfnImageRecipe.EbsInstanceBlockDeviceSpecificationProperty</code> | Configuration for the AMI's EBS volume. |
@@ -291,6 +292,18 @@ public readonly additionalPolicies: ManagedPolicy[];
 - *Type:* aws-cdk-lib.aws_iam.ManagedPolicy[]
 
 Additional policies to add to the instance profile associated with the Instance Configurations.
+
+---
+
+##### `amiIdSsmPath`<sup>Optional</sup> <a name="amiIdSsmPath" id="cdk-image-pipeline.ImagePipelineProps.property.amiIdSsmPath"></a>
+
+```typescript
+public readonly amiIdSsmPath: string;
+```
+
+- *Type:* string
+
+Parameter Store path to store latest AMI ID under.
 
 ---
 
