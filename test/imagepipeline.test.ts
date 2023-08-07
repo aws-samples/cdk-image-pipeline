@@ -19,6 +19,8 @@ const props: ImagePipelineProps = {
   vulnScansRepoName: 'image-builder-vuln-scans',
   vulnScansRepoTags: ['al2-x86-base'],
   amiIdSsmPath: '/ec2-image-builder/al2-x86',
+  amiIdSsmAccountId: '11223344556',
+  amiIdSsmRegion: 'us-east-1',
 };
 
 const propsWithNetworking: ImagePipelineProps = {

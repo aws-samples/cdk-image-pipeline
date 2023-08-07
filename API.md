@@ -152,7 +152,9 @@ const imagePipelineProps: ImagePipelineProps = { ... }
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.pipelineName">pipelineName</a></code> | <code>string</code> | Name of the Image Pipeline. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.profileName">profileName</a></code> | <code>string</code> | Name of the instance profile that will be associated with the Instance Configuration. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.additionalPolicies">additionalPolicies</a></code> | <code>aws-cdk-lib.aws_iam.ManagedPolicy[]</code> | Additional policies to add to the instance profile associated with the Instance Configurations. |
+| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.amiIdSsmAccountId">amiIdSsmAccountId</a></code> | <code>string</code> | Account ID for Parameter Store path above. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.amiIdSsmPath">amiIdSsmPath</a></code> | <code>string</code> | Parameter Store path to store latest AMI ID under. |
+| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.amiIdSsmRegion">amiIdSsmRegion</a></code> | <code>string</code> | Region for Parameter Store path above. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.distributionAccountIDs">distributionAccountIDs</a></code> | <code>string[]</code> | List of accounts to copy this AMI to, if the option to do so is enabled. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.distributionRegions">distributionRegions</a></code> | <code>string[]</code> | List of regions to copy this AMI to, if the option to do so is enabled. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.ebsVolumeConfiguration">ebsVolumeConfiguration</a></code> | <code>aws-cdk-lib.aws_imagebuilder.CfnImageRecipe.EbsInstanceBlockDeviceSpecificationProperty</code> | Configuration for the AMI's EBS volume. |
@@ -295,6 +297,18 @@ Additional policies to add to the instance profile associated with the Instance 
 
 ---
 
+##### `amiIdSsmAccountId`<sup>Optional</sup> <a name="amiIdSsmAccountId" id="cdk-image-pipeline.ImagePipelineProps.property.amiIdSsmAccountId"></a>
+
+```typescript
+public readonly amiIdSsmAccountId: string;
+```
+
+- *Type:* string
+
+Account ID for Parameter Store path above.
+
+---
+
 ##### `amiIdSsmPath`<sup>Optional</sup> <a name="amiIdSsmPath" id="cdk-image-pipeline.ImagePipelineProps.property.amiIdSsmPath"></a>
 
 ```typescript
@@ -304,6 +318,18 @@ public readonly amiIdSsmPath: string;
 - *Type:* string
 
 Parameter Store path to store latest AMI ID under.
+
+---
+
+##### `amiIdSsmRegion`<sup>Optional</sup> <a name="amiIdSsmRegion" id="cdk-image-pipeline.ImagePipelineProps.property.amiIdSsmRegion"></a>
+
+```typescript
+public readonly amiIdSsmRegion: string;
+```
+
+- *Type:* string
+
+Region for Parameter Store path above.
 
 ---
 

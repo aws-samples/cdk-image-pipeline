@@ -7,7 +7,6 @@ import {
   aws_sns as sns,
   aws_sns_subscriptions as subscriptions,
   aws_lambda as lambda,
-  Stack,
 } from 'aws-cdk-lib';
 import { SnsEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
 import { Construct } from 'constructs';
@@ -119,6 +118,14 @@ export interface ImagePipelineProps {
    * Parameter Store path to store latest AMI ID under
    */
   readonly amiIdSsmPath?: string;
+  /**
+   * Account ID for Parameter Store path above
+   */
+  readonly amiIdSsmAccountId?: string;
+  /**
+   * Region for Parameter Store path above
+   */
+  readonly amiIdSsmRegion?: string;
 }
 
 export class ImagePipeline extends Construct {
@@ -282,7 +289,7 @@ export class ImagePipeline extends Construct {
       const amiSsmUpdateLambdaPolicy = new iam.PolicyDocument({
         statements: [
           new iam.PolicyStatement({
-            resources: [`arn:aws:ssm:${Stack.of(this).account}:${Stack.of(this).region}:parameter/${props.amiIdSsmPath}`],
+            resources: [`arn:aws:ssm:${props.amiIdSsmRegion}:${props.amiIdSsmAccountId}:parameter/${props.amiIdSsmPath}`],
             actions: [
               'ssm:PutParameter',
               'ssm:GetParameterHistory',
