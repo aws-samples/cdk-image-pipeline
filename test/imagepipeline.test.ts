@@ -5,9 +5,18 @@ import { ImagePipeline, ImagePipelineProps } from '../src';
 let template: Template;
 
 const props: ImagePipelineProps = {
-  componentDocuments: ['test/test_component_example.yml', 'test/test_component_example_2.yml'],
-  componentNames: ['TestComponent', 'TestComponent2'],
-  componentVersions: ['1.0.0'],
+  components: [
+    {
+      document: 'test/test_component_example.yml',
+      name: 'TestComponent',
+      version: '1.0.0',
+    },
+    {
+      document: 'test/test_component_example_2.yml',
+      name: 'TestComponent2',
+      version: '1.0.0',
+    },
+  ],
   profileName: 'TestProfile',
   infraConfigName: 'TestInfrastructureConfig',
   imageRecipe: 'TestImageRecipe',
@@ -24,9 +33,13 @@ const props: ImagePipelineProps = {
 };
 
 const propsWithNetworking: ImagePipelineProps = {
-  componentDocuments: ['test/test_component_example.yml'],
-  componentNames: ['TestComponent'],
-  componentVersions: ['1.0.0'],
+  components: [
+    {
+      document: 'test/test_component_example.yml',
+      name: 'TestComponent',
+      version: '1.0.0',
+    },
+  ],
   profileName: 'TestProfile',
   infraConfigName: 'TestInfrastructureConfig',
   imageRecipe: 'TestImageRecipe',
@@ -38,9 +51,13 @@ const propsWithNetworking: ImagePipelineProps = {
 };
 
 const propsWithVolumeConfig: ImagePipelineProps = {
-  componentDocuments: ['test/test_component_example.yml'],
-  componentNames: ['TestComponent'],
-  componentVersions: ['1.0.0'],
+  components: [
+    {
+      document: 'test/test_component_example.yml',
+      name: 'TestComponent',
+      version: '1.0.0',
+    },
+  ],
   profileName: 'TestProfile',
   infraConfigName: 'TestInfrastructureConfig',
   imageRecipe: 'TestImageRecipe',
@@ -200,7 +217,7 @@ test.skip('Infrastructure Configuration DependsOn Instance Profile', () => {
 });
 
 test('Image Builder Component is created', () => {
-  template.resourceCountIs('AWS::ImageBuilder::Component', props.componentDocuments.length);
+  template.resourceCountIs('AWS::ImageBuilder::Component', props.components.length);
 });
 
 test('Image Recipe is created', () => {

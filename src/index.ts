@@ -11,19 +11,26 @@ import {
 import { SnsEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
 import { Construct } from 'constructs';
 
+export interface ComponentProps {
+  /**
+   * Relative path to Image Builder component document
+   */
+  readonly document: string;
+  /**
+   * Name of the Component Document
+   */
+  readonly name: string;
+  /**
+   * Version for each component document
+   */
+  readonly version: string;
+}
+
 export interface ImagePipelineProps {
   /**
-   * Relative path to Image Builder component documents
+   * List of component props
    */
-  readonly componentDocuments: string[];
-  /**
-   * Names of the Component Documents
-   */
-  readonly componentNames: string[];
-  /**
-   * Versions for each component document
-   */
-  readonly componentVersions: string[];
+  readonly components: ComponentProps[];
   /**
    * Name of the instance profile that will be associated with the Instance Configuration.
    */
@@ -130,6 +137,7 @@ export interface ImagePipelineProps {
 
 export class ImagePipeline extends Construct {
   imageRecipeComponents: imagebuilder.CfnImageRecipe.ComponentConfigurationProperty[];
+
   constructor(scope: Construct, id: string, props: ImagePipelineProps) {
     super(scope, id);
     let infrastructureConfig: imagebuilder.CfnInfrastructureConfiguration;
@@ -140,6 +148,7 @@ export class ImagePipeline extends Construct {
     const kmsKey = kms.Key.fromLookup(this, 'KmsKeyLookup', {
       aliasName: props.kmsKeyAlias,
     });
+
     const topic = new sns.Topic(this, 'ImageBuilderTopic', {
       displayName: 'Image Builder Notify',
       masterKey: kmsKey,
@@ -219,16 +228,16 @@ export class ImagePipeline extends Construct {
     }
     imageRecipe = new imagebuilder.CfnImageRecipe(this, 'ImageRecipe', imageRecipeProps);
 
-    props.componentDocuments.forEach((document, index) => {
-      let component = new imagebuilder.CfnComponent(this, props.componentNames[index], {
-        name: props.componentNames[index],
-        platform: props.platform ?? 'Linux',
-        version: props.componentVersions[index] ?? '0.0.1',
-        data: readFileSync(document).toString(),
+    props.components.forEach((component) => {
+      let newComponent = new imagebuilder.CfnComponent(this, component.name, {
+        name: component.name,
+        platform: 'Linux',
+        version: component.version,
+        data: readFileSync(component.document).toString(),
       });
 
       // add the component to the Image Recipe
-      this.imageRecipeComponents.push({ componentArn: component.attrArn });
+      this.imageRecipeComponents.push({ componentArn: newComponent.attrArn });
       imageRecipe.components = this.imageRecipeComponents;
     });
 

@@ -47,9 +47,18 @@ import { Construct } from 'constructs';
 // ...
 // Create a new image pipeline with the required properties
 new ImagePipeline(this, "MyImagePipeline", {
-    componentDocuments: ['component_example.yml', 'component_example_2.yml'],
-    componentNames: ['Component', 'Component2'],
-    componentVersions: ['0.0.1', '0.1.0'],
+    components: [
+      {
+        document: 'component_example.yml',
+        name: 'Component',
+        version: '0.0.1',
+      },
+      {
+        document: 'component_example_2.yml',
+        name: 'Component2',
+        version: '0.1.0',
+      },
+    ],
     kmsKeyAlias: 'alias/my-key',
     profileName: 'ImagePipelineInstanceProfile',
     infraConfigName: 'MyInfrastructureConfiguration',
@@ -96,9 +105,18 @@ const private_subnet = vpc.privateSubnets;
 
 
 new ImagePipeline(this, "MyImagePipeline", {
-    componentDocuments: ['component_example.yml', 'component_example_2.yml'],
-    componentNames: ['Component', 'Component2'],
-    componentVersions: ['0.0.1', '0.1.0'],
+    components: [
+      {
+        document: 'component_example.yml',
+        name: 'Component',
+        version: '0.0.1',
+      },
+      {
+        document: 'component_example_2.yml',
+        name: 'Component2',
+        version: '0.1.0',
+      },
+    ],
     kmsKeyAlias: 'alias/my-key',
     profileName: 'ImagePipelineInstanceProfile',
     infraConfigName: 'MyInfrastructureConfiguration',
@@ -121,9 +139,18 @@ from constructs import Construct
 image_pipeline = ImagePipeline(
     self,
     "LatestImagePipeline",
-    component_documents=["component_example.yml", "component_example2.yml"],
-    component_names=["Component", "Component2"],
-    component_versions=["0.0.1", "0.1.0"],
+    components=[
+      {
+        document: 'component_example.yml',
+        name: 'Component',
+        version: '0.0.1',
+      },
+      {
+        document: 'component_example_2.yml',
+        name: 'Component2',
+        version: '0.1.0',
+      },
+    ],
     kms_key_alias="alias/my-key",
     image_recipe="Recipe4",
     pipeline_name="Pipeline4",
@@ -172,9 +199,18 @@ priv_subnets = vpc.private_subnets
 image_pipeline = ImagePipeline(
     self,
     "LatestImagePipeline",
-    component_documents=["component_example.yml", "component_example2.yml"],
-    component_names=["Component", "Component2"],
-    component_versions=["0.0.1", "0.1.0"],
+    components=[
+      {
+        document: 'component_example.yml',
+        name: 'Component',
+        version: '0.0.1',
+      },
+      {
+        document: 'component_example_2.yml',
+        name: 'Component2',
+        version: '0.1.0',
+      },
+    ],
     kms_key_alias="alias/my-key",
     image_recipe="Recipe4",
     pipeline_name="Pipeline4",
