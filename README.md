@@ -64,7 +64,20 @@ new ImagePipeline(this, "MyImagePipeline", {
     infraConfigName: 'MyInfrastructureConfiguration',
     imageRecipe: 'MyImageRecipe',
     pipelineName: 'MyImagePipeline',
-    parentImage: 'ami-0e1d30f2c40c4c701'
+    parentImage: 'ami-0e1d30f2c40c4c701',
+    ebsVolumeConfigurations: [
+        {
+            deviceName: '/dev/xvda',
+            ebs: {
+                encrypted: true,
+                iops: 200,
+                kmsKeyId: 'alias/app1/key',
+                volumeSize: 20,
+                volumeType: 'gp3',
+                throughput: 1000,
+            },
+        },
+    ],
 })
 // ...
 ```
@@ -222,6 +235,7 @@ image_pipeline = ImagePipeline(
 )
 # ...
 ```
+
 
 ### Component Documents
 

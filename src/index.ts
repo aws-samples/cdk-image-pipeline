@@ -25,6 +25,16 @@ export interface ComponentProps {
    */
   readonly version: string;
 }
+export interface VolumeProps {
+  /**
+   * Name of the volume
+   */
+  readonly deviceName: string;
+  /**
+   * EBS Block Store Parameters
+   */
+  readonly ebs: imagebuilder.CfnImageRecipe.EbsInstanceBlockDeviceSpecificationProperty;
+}
 
 export interface ImagePipelineProps {
   /**
@@ -78,8 +88,8 @@ export interface ImagePipelineProps {
    */
   readonly platform?: string;
   /**
-  * Email used to receive Image Builder Pipeline Notifications via SNS
-  */
+   * Email used to receive Image Builder Pipeline Notifications via SNS
+   */
   readonly email?: string;
   /**
    * List of security group IDs for the Infrastructure Configuration
@@ -90,13 +100,9 @@ export interface ImagePipelineProps {
    */
   readonly subnetId?: string;
   /**
-   * Configuration for the AMI's EBS volume
+   * Configuration for the AMI's EBS volumes
    */
-  readonly ebsVolumeConfiguration?: imagebuilder.CfnImageRecipe.EbsInstanceBlockDeviceSpecificationProperty;
-  /**
-   * Name of the AMI's EBS volume
-   */
-  readonly ebsVolumeName?: string;
+  readonly ebsVolumeConfigurations?: VolumeProps[];
   /**
    * Set to true if you want to enable continuous vulnerability scans through AWS Inpector
    */
@@ -217,13 +223,10 @@ export class ImagePipeline extends Construct {
         },
       };
     };
-    if (props.ebsVolumeConfiguration && props.ebsVolumeName) {
+    if (props.ebsVolumeConfigurations) {
       imageRecipeProps = {
         ...imageRecipeProps,
-        blockDeviceMappings: [{
-          deviceName: props.ebsVolumeName,
-          ebs: props.ebsVolumeConfiguration,
-        }],
+        blockDeviceMappings: props.ebsVolumeConfigurations,
       };
     }
     imageRecipe = new imagebuilder.CfnImageRecipe(this, 'ImageRecipe', imageRecipeProps);
@@ -274,7 +277,7 @@ export class ImagePipeline extends Construct {
             LaunchPermissionConfiguration: {
               UserIds: props.distributionAccountIDs,
             },
-            KmsKeyId: props.ebsVolumeConfiguration?.kmsKeyId ?? 'aws/ebs', //use default AWS-managed key if one isn't given
+            KmsKeyId: props.ebsVolumeConfigurations ? props.ebsVolumeConfigurations[0].ebs.kmsKeyId : 'aws/ebs', //use default AWS-managed key if one isn't given
           },
         };
         distributionsList.push(distributionConfig);

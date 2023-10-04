@@ -66,15 +66,19 @@ const propsWithVolumeConfig: ImagePipelineProps = {
   kmsKeyAlias: 'alias/app1/key',
   securityGroups: ['sg-12345678'],
   subnetId: 'subnet-12345678',
-  ebsVolumeName: '/dev/xvda',
-  ebsVolumeConfiguration: {
-    encrypted: true,
-    iops: 200,
-    kmsKeyId: 'alias/app1/key',
-    volumeSize: 20,
-    volumeType: 'gp3',
-    throughput: 1000,
-  },
+  ebsVolumeConfigurations: [
+    {
+      deviceName: '/dev/xvda',
+      ebs: {
+        encrypted: true,
+        iops: 200,
+        kmsKeyId: 'alias/app1/key',
+        volumeSize: 20,
+        volumeType: 'gp3',
+        throughput: 1000,
+      },
+    },
+  ],
   enableCrossAccountDistribution: true,
   distributionAccountIDs: ['111222333444'],
   distributionRegions: ['us-east-1'],
