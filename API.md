@@ -211,8 +211,7 @@ const imagePipelineProps: ImagePipelineProps = { ... }
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.amiIdSsmRegion">amiIdSsmRegion</a></code> | <code>string</code> | Region for Parameter Store path above. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.distributionAccountIDs">distributionAccountIDs</a></code> | <code>string[]</code> | List of accounts to copy this AMI to, if the option to do so is enabled. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.distributionRegions">distributionRegions</a></code> | <code>string[]</code> | List of regions to copy this AMI to, if the option to do so is enabled. |
-| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.ebsVolumeConfiguration">ebsVolumeConfiguration</a></code> | <code>aws-cdk-lib.aws_imagebuilder.CfnImageRecipe.EbsInstanceBlockDeviceSpecificationProperty</code> | Configuration for the AMI's EBS volume. |
-| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.ebsVolumeName">ebsVolumeName</a></code> | <code>string</code> | Name of the AMI's EBS volume. |
+| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.ebsVolumeConfigurations">ebsVolumeConfigurations</a></code> | <code><a href="#cdk-image-pipeline.VolumeProps">VolumeProps</a>[]</code> | Configuration for the AMI's EBS volumes. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.email">email</a></code> | <code>string</code> | Email used to receive Image Builder Pipeline Notifications via SNS. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.enableCrossAccountDistribution">enableCrossAccountDistribution</a></code> | <code>boolean</code> | Set to true if you want to copy this AMI to other accounts using a Distribution Configuration. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.enableVulnScans">enableVulnScans</a></code> | <code>boolean</code> | Set to true if you want to enable continuous vulnerability scans through AWS Inpector. |
@@ -387,27 +386,15 @@ List of regions to copy this AMI to, if the option to do so is enabled.
 
 ---
 
-##### `ebsVolumeConfiguration`<sup>Optional</sup> <a name="ebsVolumeConfiguration" id="cdk-image-pipeline.ImagePipelineProps.property.ebsVolumeConfiguration"></a>
+##### `ebsVolumeConfigurations`<sup>Optional</sup> <a name="ebsVolumeConfigurations" id="cdk-image-pipeline.ImagePipelineProps.property.ebsVolumeConfigurations"></a>
 
 ```typescript
-public readonly ebsVolumeConfiguration: EbsInstanceBlockDeviceSpecificationProperty;
+public readonly ebsVolumeConfigurations: VolumeProps[];
 ```
 
-- *Type:* aws-cdk-lib.aws_imagebuilder.CfnImageRecipe.EbsInstanceBlockDeviceSpecificationProperty
+- *Type:* <a href="#cdk-image-pipeline.VolumeProps">VolumeProps</a>[]
 
-Configuration for the AMI's EBS volume.
-
----
-
-##### `ebsVolumeName`<sup>Optional</sup> <a name="ebsVolumeName" id="cdk-image-pipeline.ImagePipelineProps.property.ebsVolumeName"></a>
-
-```typescript
-public readonly ebsVolumeName: string;
-```
-
-- *Type:* string
-
-Name of the AMI's EBS volume.
+Configuration for the AMI's EBS volumes.
 
 ---
 
@@ -541,6 +528,49 @@ public readonly vulnScansRepoTags: string[];
 - *Type:* string[]
 
 Store vulnerability scans through AWS Inpsector in ECR using these image tags (if option is enabled).
+
+---
+
+### VolumeProps <a name="VolumeProps" id="cdk-image-pipeline.VolumeProps"></a>
+
+#### Initializer <a name="Initializer" id="cdk-image-pipeline.VolumeProps.Initializer"></a>
+
+```typescript
+import { VolumeProps } from 'cdk-image-pipeline'
+
+const volumeProps: VolumeProps = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#cdk-image-pipeline.VolumeProps.property.deviceName">deviceName</a></code> | <code>string</code> | Name of the volume. |
+| <code><a href="#cdk-image-pipeline.VolumeProps.property.ebs">ebs</a></code> | <code>aws-cdk-lib.aws_imagebuilder.CfnImageRecipe.EbsInstanceBlockDeviceSpecificationProperty</code> | EBS Block Store Parameters. |
+
+---
+
+##### `deviceName`<sup>Required</sup> <a name="deviceName" id="cdk-image-pipeline.VolumeProps.property.deviceName"></a>
+
+```typescript
+public readonly deviceName: string;
+```
+
+- *Type:* string
+
+Name of the volume.
+
+---
+
+##### `ebs`<sup>Required</sup> <a name="ebs" id="cdk-image-pipeline.VolumeProps.property.ebs"></a>
+
+```typescript
+public readonly ebs: EbsInstanceBlockDeviceSpecificationProperty;
+```
+
+- *Type:* aws-cdk-lib.aws_imagebuilder.CfnImageRecipe.EbsInstanceBlockDeviceSpecificationProperty
+
+EBS Block Store Parameters.
 
 ---
 
