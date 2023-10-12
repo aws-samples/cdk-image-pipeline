@@ -31,7 +31,7 @@
     },
     {
       "name": "constructs",
-      "version": "10.2.60",
+      "version": "10.3.0",
       "type": "build"
     },
     {
@@ -85,7 +85,7 @@
     },
     {
       "name": "projen",
-      "version": "0.71.111",
+      "version": "0.74.10",
       "type": "build"
     },
     {
@@ -118,7 +118,7 @@
     },
     {
       "name": "constructs",
-      "version": "^10.2.60",
+      "version": "^10.3.0",
       "type": "peer"
     }
   ],
