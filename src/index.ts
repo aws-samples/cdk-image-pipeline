@@ -306,6 +306,7 @@ export class ImagePipeline extends Construct {
               'ssm:PutParameter',
               'ssm:GetParameterHistory',
               'ssm:GetParameter',
+              'ssm:GetParameters',
               'ssm:AddTagsToResource',
             ],
           }),
