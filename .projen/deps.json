@@ -17,21 +17,16 @@
     },
     {
       "name": "@typescript-eslint/eslint-plugin",
-      "version": "^5",
+      "version": "^6",
       "type": "build"
     },
     {
       "name": "@typescript-eslint/parser",
-      "version": "^5",
+      "version": "^6",
       "type": "build"
     },
     {
       "name": "aws-cdk-lib",
-      "type": "build"
-    },
-    {
-      "name": "constructs",
-      "version": "10.3.0",
       "type": "build"
     },
     {
@@ -71,6 +66,11 @@
     },
     {
       "name": "jsii-pacmak",
+      "type": "build"
+    },
+    {
+      "name": "jsii-rosetta",
+      "version": "1.x",
       "type": "build"
     },
     {
