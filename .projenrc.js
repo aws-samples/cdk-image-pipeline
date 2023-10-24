@@ -20,8 +20,8 @@ const project = new awscdk.AwsCdkConstructLibrary({
   devDeps: ['@types/prettier@2.7.2'],
 });
 
-project.addPeerDeps('aws-cdk-lib');
-project.addDevDeps('aws-cdk-lib');
+project.addPeerDeps('aws-cdk-lib@2.102.0');
+project.addDevDeps('aws-cdk-lib@2.102.0');
 project.addDevDeps('projen@0.74.10');
 
 project.synth();
