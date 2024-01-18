@@ -234,7 +234,7 @@ export class ImagePipeline extends Construct {
     props.components.forEach((component) => {
       let newComponent = new imagebuilder.CfnComponent(this, component.name, {
         name: component.name,
-        platform: 'Linux',
+        platform: props.platform ? props.platform : 'Linux',
         version: component.version,
         data: readFileSync(component.document).toString(),
       });
