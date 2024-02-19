@@ -281,7 +281,7 @@ Be sure to update the `imageRecipeVersion` property when making updates to your 
 
 ---
 
-Specify an alias via the `kmsKeyAlias` property which will be used to encrypt the SNS topic.
+Specify a KMS Key via the `kmsKey` property which will be used to encrypt the SNS topic.
 
 ### Infrastructure Configuration Instance Types
 
