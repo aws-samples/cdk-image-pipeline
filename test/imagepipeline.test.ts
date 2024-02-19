@@ -22,7 +22,6 @@ const props: ImagePipelineProps = {
   imageRecipe: 'TestImageRecipe',
   pipelineName: 'TestImagePipeline',
   parentImage: 'ami-04505e74c0741db8d', // Ubuntu Server 20.04 LTS
-  kmsKeyAlias: 'alias/app1/key',
   email: 'unit@test.com',
   enableVulnScans: true,
   vulnScansRepoName: 'image-builder-vuln-scans',
@@ -45,7 +44,6 @@ const propsWithNetworking: ImagePipelineProps = {
   imageRecipe: 'TestImageRecipe',
   pipelineName: 'TestImagePipeline',
   parentImage: 'ami-04505e74c0741db8d', // Ubuntu Server 20.04 LTS
-  kmsKeyAlias: 'alias/app1/key',
   securityGroups: ['sg-12345678'],
   subnetId: 'subnet-12345678',
 };
@@ -63,7 +61,6 @@ const propsWithVolumeConfig: ImagePipelineProps = {
   imageRecipe: 'TestImageRecipe',
   pipelineName: 'TestImagePipeline',
   parentImage: 'ami-04505e74c0741db8d', // Ubuntu Server 20.04 LTS
-  kmsKeyAlias: 'alias/app1/key',
   securityGroups: ['sg-12345678'],
   subnetId: 'subnet-12345678',
   ebsVolumeConfigurations: [

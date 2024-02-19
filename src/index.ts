@@ -76,9 +76,9 @@ export interface ImagePipelineProps {
    */
   readonly parentImage: string;
   /**
-   * KMS Key used to encrypt the SNS topic. Enter an existing KMS Key Alias in your target account/region.
+   * KMS Key used to encrypt the SNS topic.
    */
-  readonly kmsKeyAlias: string;
+  readonly kmsKey?: kms.IKey;
   /**
    * List of instance types used in the Instance Configuration (Default: [ 't3.medium', 'm5.large', 'm5.xlarge' ])
    */
@@ -151,13 +151,9 @@ export class ImagePipeline extends Construct {
     this.imageRecipeComponents = [];
 
     // Construct code below
-    const kmsKey = kms.Key.fromLookup(this, 'KmsKeyLookup', {
-      aliasName: props.kmsKeyAlias,
-    });
-
     const topic = new sns.Topic(this, 'ImageBuilderTopic', {
       displayName: 'Image Builder Notify',
-      masterKey: kmsKey,
+      masterKey: props.kmsKey,
     });
 
     if (props.email != null) {
