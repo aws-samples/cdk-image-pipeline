@@ -329,9 +329,19 @@ export class ImagePipeline extends Construct {
     new imagebuilder.CfnImagePipeline(this, 'ImagePipeline', imagePipelineProps);
   }
 
+  /**
+   * Helper function to hash an object to create unique resource names
+   * 
+   * @param o an object to hash
+   * @returns 6 character hash string
+   */
   private hash(o: object): string {
+    // Remove any token references that would cause the result to be
+    // non-deterministic.
+    const cleanString = JSON.stringify(o).replace(/\${[^{]*}/g, '');
+
     return createHash('sha256')
-      .update(JSON.stringify(o))
+      .update(cleanString)
       .digest('hex')
       .toUpperCase()
       .slice(0, 6);
