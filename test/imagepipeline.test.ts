@@ -17,10 +17,6 @@ const props: ImagePipelineProps = {
       version: '1.0.0',
     },
   ],
-  profileName: 'TestProfile',
-  infraConfigName: 'TestInfrastructureConfig',
-  imageRecipe: 'TestImageRecipe',
-  pipelineName: 'TestImagePipeline',
   parentImage: 'ami-04505e74c0741db8d', // Ubuntu Server 20.04 LTS
   email: 'unit@test.com',
   enableVulnScans: true,
@@ -39,10 +35,6 @@ const propsWithNetworking: ImagePipelineProps = {
       version: '1.0.0',
     },
   ],
-  profileName: 'TestProfile',
-  infraConfigName: 'TestInfrastructureConfig',
-  imageRecipe: 'TestImageRecipe',
-  pipelineName: 'TestImagePipeline',
   parentImage: 'ami-04505e74c0741db8d', // Ubuntu Server 20.04 LTS
   securityGroups: ['sg-12345678'],
   subnetId: 'subnet-12345678',
@@ -56,10 +48,6 @@ const propsWithVolumeConfig: ImagePipelineProps = {
       version: '1.0.0',
     },
   ],
-  profileName: 'TestProfile',
-  infraConfigName: 'TestInfrastructureConfig',
-  imageRecipe: 'TestImageRecipe',
-  pipelineName: 'TestImagePipeline',
   parentImage: 'ami-04505e74c0741db8d', // Ubuntu Server 20.04 LTS
   securityGroups: ['sg-12345678'],
   subnetId: 'subnet-12345678',
@@ -144,8 +132,6 @@ test('Infrastructure Configuration is built with provided Networking properties'
   const templateWithNetworking = Template.fromStack(testStack);
 
   templateWithNetworking.hasResourceProperties('AWS::ImageBuilder::InfrastructureConfiguration', {
-    InstanceProfileName: props.profileName,
-    Name: props.infraConfigName,
     SnsTopicArn: Match.anyValue(),
     SecurityGroupIds: ['sg-12345678'],
     SubnetId: 'subnet-12345678',
@@ -164,7 +150,6 @@ test('Infrastructure Configuration is built with provided EBS volume properties'
   const templateWithVolume = Template.fromStack(testStack);
 
   templateWithVolume.hasResourceProperties('AWS::ImageBuilder::ImageRecipe', {
-    Name: 'TestImageRecipe',
     BlockDeviceMappings: [
       {
         DeviceName: '/dev/xvda',
@@ -180,20 +165,14 @@ test('Infrastructure Configuration is built with provided EBS volume properties'
     ],
   });
   templateWithVolume.hasResourceProperties('AWS::ImageBuilder::InfrastructureConfiguration', {
-    InstanceProfileName: props.profileName,
-    Name: props.infraConfigName,
     SnsTopicArn: Match.anyValue(),
     SecurityGroupIds: ['sg-12345678'],
     SubnetId: 'subnet-12345678',
   });
   templateWithVolume.hasResourceProperties('AWS::ImageBuilder::DistributionConfiguration', {
-    Name: 'TestImageRecipe-distribution-config',
-    Description: 'Cross account distribution settings for TestImageRecipe',
     Distributions: [{
       Region: 'us-east-1',
       AmiDistributionConfiguration: {
-        Name: 'TestImageRecipe-us-east-1-{{imagebuilder:buildDate}}',
-        Description: 'copy AMI TestImageRecipe to us-east-1',
         TargetAccountIds: ['111222333444'],
         LaunchPermissionConfiguration: {
           UserIds: ['111222333444'],
@@ -207,8 +186,6 @@ test('Infrastructure Configuration is built with provided EBS volume properties'
 
 test('Infrastructure Configuration contains required properties', () => {
   template.hasResourceProperties('AWS::ImageBuilder::InfrastructureConfiguration', {
-    InstanceProfileName: props.profileName,
-    Name: props.infraConfigName,
     SnsTopicArn: Match.anyValue(),
   });
 });

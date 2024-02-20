@@ -198,12 +198,8 @@ const imagePipelineProps: ImagePipelineProps = { ... }
 
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
-| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.components">components</a></code> | <code><a href="#cdk-image-pipeline.ComponentProps">ComponentProps</a>[]</code> | List of component props. |
-| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.imageRecipe">imageRecipe</a></code> | <code>string</code> | Name of the Image Recipe. |
-| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.infraConfigName">infraConfigName</a></code> | <code>string</code> | Name of the Infrastructure Configuration for Image Builder. |
+| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.components">components</a></code> | <code>string \| <a href="#cdk-image-pipeline.ComponentProps">ComponentProps</a>[]</code> | List of component props. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.parentImage">parentImage</a></code> | <code>string</code> | The source (parent) image that the image recipe uses as its base environment. |
-| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.pipelineName">pipelineName</a></code> | <code>string</code> | Name of the Image Pipeline. |
-| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.profileName">profileName</a></code> | <code>string</code> | Name of the instance profile that will be associated with the Instance Configuration. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.additionalPolicies">additionalPolicies</a></code> | <code>aws-cdk-lib.aws_iam.ManagedPolicy[]</code> | Additional policies to add to the instance profile associated with the Instance Configurations. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.amiIdSsmAccountId">amiIdSsmAccountId</a></code> | <code>string</code> | Account ID for Parameter Store path above. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.amiIdSsmPath">amiIdSsmPath</a></code> | <code>string</code> | Parameter Store path to store latest AMI ID under. |
@@ -229,36 +225,12 @@ const imagePipelineProps: ImagePipelineProps = { ... }
 ##### `components`<sup>Required</sup> <a name="components" id="cdk-image-pipeline.ImagePipelineProps.property.components"></a>
 
 ```typescript
-public readonly components: ComponentProps[];
+public readonly components: string | ComponentProps[];
 ```
 
-- *Type:* <a href="#cdk-image-pipeline.ComponentProps">ComponentProps</a>[]
+- *Type:* string | <a href="#cdk-image-pipeline.ComponentProps">ComponentProps</a>[]
 
 List of component props.
-
----
-
-##### `imageRecipe`<sup>Required</sup> <a name="imageRecipe" id="cdk-image-pipeline.ImagePipelineProps.property.imageRecipe"></a>
-
-```typescript
-public readonly imageRecipe: string;
-```
-
-- *Type:* string
-
-Name of the Image Recipe.
-
----
-
-##### `infraConfigName`<sup>Required</sup> <a name="infraConfigName" id="cdk-image-pipeline.ImagePipelineProps.property.infraConfigName"></a>
-
-```typescript
-public readonly infraConfigName: string;
-```
-
-- *Type:* string
-
-Name of the Infrastructure Configuration for Image Builder.
 
 ---
 
@@ -273,30 +245,6 @@ public readonly parentImage: string;
 The source (parent) image that the image recipe uses as its base environment.
 
 The value can be the parent image ARN or an Image Builder AMI ID
-
----
-
-##### `pipelineName`<sup>Required</sup> <a name="pipelineName" id="cdk-image-pipeline.ImagePipelineProps.property.pipelineName"></a>
-
-```typescript
-public readonly pipelineName: string;
-```
-
-- *Type:* string
-
-Name of the Image Pipeline.
-
----
-
-##### `profileName`<sup>Required</sup> <a name="profileName" id="cdk-image-pipeline.ImagePipelineProps.property.profileName"></a>
-
-```typescript
-public readonly profileName: string;
-```
-
-- *Type:* string
-
-Name of the instance profile that will be associated with the Instance Configuration.
 
 ---
 

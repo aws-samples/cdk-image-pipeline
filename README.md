@@ -59,11 +59,6 @@ new ImagePipeline(this, "MyImagePipeline", {
         version: '0.1.0',
       },
     ],
-    kmsKeyAlias: 'alias/my-key',
-    profileName: 'ImagePipelineInstanceProfile',
-    infraConfigName: 'MyInfrastructureConfiguration',
-    imageRecipe: 'MyImageRecipe',
-    pipelineName: 'MyImagePipeline',
     parentImage: 'ami-0e1d30f2c40c4c701',
     ebsVolumeConfigurations: [
         {
@@ -130,11 +125,6 @@ new ImagePipeline(this, "MyImagePipeline", {
         version: '0.1.0',
       },
     ],
-    kmsKeyAlias: 'alias/my-key',
-    profileName: 'ImagePipelineInstanceProfile',
-    infraConfigName: 'MyInfrastructureConfiguration',
-    imageRecipe: 'MyImageRecipe',
-    pipelineName: 'MyImagePipeline',
     parentImage: 'ami-0e1d30f2c40c4c701',
     securityGroups: [sg.securityGroupId],
     subnetId: private_subnet[0].subnetId,
@@ -164,12 +154,7 @@ image_pipeline = ImagePipeline(
         version: '0.1.0',
       },
     ],
-    kms_key_alias="alias/my-key",
-    image_recipe="Recipe4",
-    pipeline_name="Pipeline4",
-    infra_config_name="InfraConfig4",
     parent_image="ami-0e1d30f2c40c4c701",
-    profile_name="ImagePipelineProfile4",
 )
 # ...
 ```
@@ -224,12 +209,7 @@ image_pipeline = ImagePipeline(
         version: '0.1.0',
       },
     ],
-    kms_key_alias="alias/my-key",
-    image_recipe="Recipe4",
-    pipeline_name="Pipeline4",
-    infra_config_name="InfraConfig4",
     parent_image="ami-0e1d30f2c40c4c701",
-    profile_name="ImagePipelineProfile4",
     security_groups=[sg.security_group_id],
     subnet_id=priv_subnets[0].subnet_id
 )
