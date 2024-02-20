@@ -331,7 +331,7 @@ export class ImagePipeline extends Construct {
 
   /**
    * Helper function to hash an object to create unique resource names
-   * 
+   *
    * @param o an object to hash
    * @returns 6 character hash string
    */
