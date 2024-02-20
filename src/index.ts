@@ -1,3 +1,4 @@
+import { createHash } from 'crypto';
 import { readFileSync } from 'fs';
 import * as path from 'path';
 import {
@@ -7,6 +8,7 @@ import {
   aws_sns as sns,
   aws_sns_subscriptions as subscriptions,
   aws_lambda as lambda,
+  Names,
 } from 'aws-cdk-lib';
 import { SnsEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
 import { Construct } from 'constructs';
@@ -40,23 +42,11 @@ export interface ImagePipelineProps {
   /**
    * List of component props
    */
-  readonly components: ComponentProps[];
-  /**
-   * Name of the instance profile that will be associated with the Instance Configuration.
-   */
-  readonly profileName: string;
+  readonly components: (ComponentProps | string)[];
   /**
    * Additional policies to add to the instance profile associated with the Instance Configurations
    */
   readonly additionalPolicies?: iam.ManagedPolicy[];
-  /**
-   * Name of the Infrastructure Configuration for Image Builder
-   */
-  readonly infraConfigName: string;
-  /**
-   * Name of the Image Recipe
-   */
-  readonly imageRecipe: string;
   /**
    * UserData script that will override default one (if specified)
    *
@@ -67,10 +57,6 @@ export interface ImagePipelineProps {
    * Image recipe version (Default: 0.0.1)
    */
   readonly imageRecipeVersion?: string;
-  /**
-   * Name of the Image Pipeline
-   */
-  readonly pipelineName: string;
   /**
    * The source (parent) image that the image recipe uses as its base environment. The value can be the parent image ARN or an Image Builder AMI ID
    */
@@ -150,6 +136,9 @@ export class ImagePipeline extends Construct {
     let imageRecipe: imagebuilder.CfnImageRecipe;
     this.imageRecipeComponents = [];
 
+    const uid = Names.uniqueId(this);
+    const profileName = `${uid}Profile`;
+
     // Construct code below
     const topic = new sns.Topic(this, 'ImageBuilderTopic', {
       displayName: 'Image Builder Notify',
@@ -176,21 +165,21 @@ export class ImagePipeline extends Construct {
 
     const profile = new iam.CfnInstanceProfile(this, 'InstanceProfile', {
       roles: [role.roleName],
-      instanceProfileName: props.profileName,
+      instanceProfileName: profileName,
     });
 
     if (props.securityGroups == null || props.subnetId == null) {
       infrastructureConfig = new imagebuilder.CfnInfrastructureConfiguration(this, 'InfrastructureConfiguration', {
-        instanceProfileName: props.profileName,
-        name: props.infraConfigName,
+        instanceProfileName: profileName,
+        name: `${uid}InfraConfig`,
         description: 'Example Infrastructure Configuration for Image Builder',
         instanceTypes: props.instanceTypes ?? ['t3.medium', 'm5.large', 'm5.xlarge'],
         snsTopicArn: topic.topicArn,
       });
     } else {
       infrastructureConfig = new imagebuilder.CfnInfrastructureConfiguration(this, 'InfrastructureConfiguration', {
-        instanceProfileName: props.profileName,
-        name: props.infraConfigName,
+        instanceProfileName: profileName,
+        name: `${uid}InfraConfig`,
         description: 'Example Infrastructure Configuration for Image Builder',
         instanceTypes: props.instanceTypes ?? ['t3.medium', 'm5.large', 'm5.xlarge'],
         snsTopicArn: topic.topicArn,
@@ -207,7 +196,7 @@ export class ImagePipeline extends Construct {
     let imageRecipeProps: imagebuilder.CfnImageRecipeProps;
     imageRecipeProps = {
       components: [],
-      name: props.imageRecipe,
+      name: 'Placeholder',
       parentImage: props.parentImage,
       version: props.imageRecipeVersion ?? '0.0.1',
     };
@@ -228,22 +217,30 @@ export class ImagePipeline extends Construct {
     imageRecipe = new imagebuilder.CfnImageRecipe(this, 'ImageRecipe', imageRecipeProps);
 
     props.components.forEach((component) => {
-      let newComponent = new imagebuilder.CfnComponent(this, component.name, {
-        name: component.name,
-        platform: props.platform ? props.platform : 'Linux',
-        version: component.version,
-        data: readFileSync(component.document).toString(),
-      });
+      if (typeof component === 'string') {
+        this.imageRecipeComponents.push({ componentArn: component });
+      } else {
+        let newComponent = new imagebuilder.CfnComponent(this, component.name, {
+          name: `${uid}${component.name}`,
+          platform: props.platform ? props.platform : 'Linux',
+          version: component.version,
+          data: readFileSync(component.document).toString(),
+        });
 
-      // add the component to the Image Recipe
-      this.imageRecipeComponents.push({ componentArn: newComponent.attrArn });
+        // add the component to the Image Recipe
+        this.imageRecipeComponents.push({ componentArn: newComponent.attrArn });
+      }
+
       imageRecipe.components = this.imageRecipeComponents;
     });
+
+    const hashId = this.hash(props.components);
+    imageRecipe.name = `${uid}${hashId}`;
 
     let imagePipelineProps: imagebuilder.CfnImagePipelineProps;
     imagePipelineProps = {
       infrastructureConfigurationArn: infrastructureConfig.attrArn,
-      name: props.pipelineName,
+      name: `${uid}ImagePipeline`,
       description: 'A sample image pipeline',
       imageRecipeArn: imageRecipe.attrArn,
     };
@@ -267,8 +264,8 @@ export class ImagePipeline extends Construct {
           amiDistributionConfiguration: {
             //Capital case here because it's an object of type any, but capital case is what is expected in CloudFormation
             //https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-imagebuilder-distributionconfiguration-amidistributionconfiguration.html
-            Name: `${props.imageRecipe}-${distributionRegion}-{{imagebuilder:buildDate}}`,
-            Description: `copy AMI ${props.imageRecipe} to ${distributionRegion}`,
+            Name: `${uid}-${distributionRegion}-{{imagebuilder:buildDate}}`,
+            Description: `copy AMI to ${distributionRegion}`,
             TargetAccountIds: props.distributionAccountIDs,
             LaunchPermissionConfiguration: {
               UserIds: props.distributionAccountIDs,
@@ -279,8 +276,8 @@ export class ImagePipeline extends Construct {
         distributionsList.push(distributionConfig);
       });
       const amiDistributionConfiguration = new imagebuilder.CfnDistributionConfiguration(this, 'amiDistributionConfiguration', {
-        name: `${props.imageRecipe}-distribution-config`,
-        description: `Cross account distribution settings for ${props.imageRecipe}`,
+        name: `${uid}DistributionConfig`,
+        description: `Cross account distribution settings for ${uid}`,
         distributions: distributionsList,
       });
       imagePipelineProps = {
@@ -308,7 +305,7 @@ export class ImagePipeline extends Construct {
           }),
         ],
       });
-      const amiSsmUpdateLambdaRole = new iam.Role(this, `${props.imageRecipe}UpdateLambdaRole`, {
+      const amiSsmUpdateLambdaRole = new iam.Role(this, 'UpdateLambdaRole', {
         assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
         managedPolicies: [
           iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
@@ -317,7 +314,7 @@ export class ImagePipeline extends Construct {
           AmiSsmUpdateLambdaPolicy: amiSsmUpdateLambdaPolicy,
         },
       });
-      const amiSsmUpdateLambda = new lambda.Function(this, `${props.imageRecipe}UpdateLambda`, {
+      const amiSsmUpdateLambda = new lambda.Function(this, 'UpdateLambda', {
         runtime: lambda.Runtime.PYTHON_3_10,
         code: lambda.Code.fromAsset(path.join(__dirname, '../assets/image-builder-update-lambda')),
         handler: 'image-builder-lambda-update-ssm.lambda_handler',
@@ -330,5 +327,13 @@ export class ImagePipeline extends Construct {
       amiSsmUpdateLambda.addEventSource(new SnsEventSource(topic, {}));
     }
     new imagebuilder.CfnImagePipeline(this, 'ImagePipeline', imagePipelineProps);
+  }
+
+  private hash(o: object): string {
+    return createHash('sha256')
+      .update(JSON.stringify(o))
+      .digest('hex')
+      .toUpperCase()
+      .slice(0, 6);
   }
 }
