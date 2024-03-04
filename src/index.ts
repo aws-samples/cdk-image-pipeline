@@ -291,10 +291,11 @@ export class ImagePipeline extends Construct {
      * (only if a Parameter Store path is provided)
      */
     if (props.amiIdSsmPath) {
+      const amiIdSsmPath = props.amiIdSsmPath.replace(/^\/+/, '/');
       const amiSsmUpdateLambdaPolicy = new iam.PolicyDocument({
         statements: [
           new iam.PolicyStatement({
-            resources: [`arn:aws:ssm:${props.amiIdSsmRegion}:${props.amiIdSsmAccountId}:parameter/${props.amiIdSsmPath}`],
+            resources: [`arn:aws:ssm:${props.amiIdSsmRegion}:${props.amiIdSsmAccountId}:parameter${amiIdSsmPath}`],
             actions: [
               'ssm:PutParameter',
               'ssm:GetParameterHistory',
@@ -320,7 +321,7 @@ export class ImagePipeline extends Construct {
         handler: 'image-builder-lambda-update-ssm.lambda_handler',
         role: amiSsmUpdateLambdaRole,
         environment: {
-          SSM_PATH: props.amiIdSsmPath,
+          SSM_PATH: amiIdSsmPath,
         },
         memorySize: 256,
       });
