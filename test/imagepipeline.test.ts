@@ -109,8 +109,29 @@ test('Infrastructure Configuration IAM Role and Instance Profile are created', (
 });
 
 test('IAM Role contains necessary permission set', () => {
-  template.hasResourceProperties('AWS::IAM::Role',
-    Match.anyValue());
+  template.hasResourceProperties('AWS::IAM::Role', {
+    Policies: [
+      {
+        PolicyName: 'AmiSsmUpdateLambdaPolicy',
+        PolicyDocument: {
+          Statement: [
+            {
+              Effect: 'Allow',
+              Action: [
+                'ssm:PutParameter',
+                'ssm:GetParameterHistory',
+                'ssm:GetParameter',
+                'ssm:GetParameters',
+                'ssm:AddTagsToResource',
+              ],
+              Resource: 'arn:aws:ssm:us-east-1:11223344556:parameter/ec2-image-builder/al2-x86',
+            },
+          ],
+        },
+      },
+    ],
+  });
+
 });
 
 test('Infrastructure Configuration has the default instance types', () => {
