@@ -129,7 +129,13 @@ export interface ImagePipelineProps {
 
 export class ImagePipeline extends Construct {
   imageRecipeComponents: imagebuilder.CfnImageRecipe.ComponentConfigurationProperty[];
+  /**
+   * The internal image pipeline created by this construct.
+   */
   readonly pipeline: imagebuilder.CfnImagePipeline;
+  /**
+   * SNS Topic where the internal ImageBuilder will notify about new builds.
+   */
   readonly builderSnsTopic: sns.Topic;
 
   constructor(scope: Construct, id: string, props: ImagePipelineProps) {
