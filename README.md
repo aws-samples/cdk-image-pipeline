@@ -165,7 +165,7 @@ from aws_cdk import (
     Stack,
     aws_ec2 as ec2,
 )
-from consturcts import Construct
+from constructs import Construct
 from cdk_image_pipeline import ImagePipeline
 
 # ...

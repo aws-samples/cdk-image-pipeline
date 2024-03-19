@@ -237,3 +237,17 @@ test('Image Pipeline has Inspector vulnerability scans configured', () => {
     },
   });
 });
+
+
+test('ImagePipeline exposes components as properties', () => {
+  const app = new cdk.App();
+  const testStack = new cdk.Stack(app, 'testStack', {
+    env: {
+      account: process.env.CDK_DEFAULT_ACCOUNT,
+      region: process.env.CDK_DEFAULT_REGION,
+    },
+  });
+  const sut = new ImagePipeline(testStack, 'ImagePipelineStack', props);
+  expect(sut.pipeline).toBeDefined();
+  expect(sut.builderSnsTopic).toBeDefined();
+});

@@ -99,6 +99,8 @@ Any object.
 | **Name** | **Type** | **Description** |
 | --- | --- | --- |
 | <code><a href="#cdk-image-pipeline.ImagePipeline.property.node">node</a></code> | <code>constructs.Node</code> | The tree node. |
+| <code><a href="#cdk-image-pipeline.ImagePipeline.property.builderSnsTopic">builderSnsTopic</a></code> | <code>aws-cdk-lib.aws_sns.Topic</code> | SNS Topic where the internal ImageBuilder will notify about new builds. |
+| <code><a href="#cdk-image-pipeline.ImagePipeline.property.pipeline">pipeline</a></code> | <code>aws-cdk-lib.aws_imagebuilder.CfnImagePipeline</code> | The internal image pipeline created by this construct. |
 | <code><a href="#cdk-image-pipeline.ImagePipeline.property.imageRecipeComponents">imageRecipeComponents</a></code> | <code>aws-cdk-lib.aws_imagebuilder.CfnImageRecipe.ComponentConfigurationProperty[]</code> | *No description.* |
 
 ---
@@ -112,6 +114,30 @@ public readonly node: Node;
 - *Type:* constructs.Node
 
 The tree node.
+
+---
+
+##### `builderSnsTopic`<sup>Required</sup> <a name="builderSnsTopic" id="cdk-image-pipeline.ImagePipeline.property.builderSnsTopic"></a>
+
+```typescript
+public readonly builderSnsTopic: Topic;
+```
+
+- *Type:* aws-cdk-lib.aws_sns.Topic
+
+SNS Topic where the internal ImageBuilder will notify about new builds.
+
+---
+
+##### `pipeline`<sup>Required</sup> <a name="pipeline" id="cdk-image-pipeline.ImagePipeline.property.pipeline"></a>
+
+```typescript
+public readonly pipeline: CfnImagePipeline;
+```
+
+- *Type:* aws-cdk-lib.aws_imagebuilder.CfnImagePipeline
+
+The internal image pipeline created by this construct.
 
 ---
 

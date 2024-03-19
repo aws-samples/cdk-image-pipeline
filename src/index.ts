@@ -129,6 +129,14 @@ export interface ImagePipelineProps {
 
 export class ImagePipeline extends Construct {
   imageRecipeComponents: imagebuilder.CfnImageRecipe.ComponentConfigurationProperty[];
+  /**
+   * The internal image pipeline created by this construct.
+   */
+  readonly pipeline: imagebuilder.CfnImagePipeline;
+  /**
+   * SNS Topic where the internal ImageBuilder will notify about new builds.
+   */
+  readonly builderSnsTopic: sns.Topic;
 
   constructor(scope: Construct, id: string, props: ImagePipelineProps) {
     super(scope, id);
@@ -140,13 +148,13 @@ export class ImagePipeline extends Construct {
     const profileName = `${uid}Profile`;
 
     // Construct code below
-    const topic = new sns.Topic(this, 'ImageBuilderTopic', {
+    this.builderSnsTopic = new sns.Topic(this, 'ImageBuilderTopic', {
       displayName: 'Image Builder Notify',
       masterKey: props.kmsKey,
     });
 
     if (props.email != null) {
-      topic.addSubscription(new subscriptions.EmailSubscription(props.email));
+      this.builderSnsTopic.addSubscription(new subscriptions.EmailSubscription(props.email));
     }
 
     const role = new iam.Role(this, 'Role', {
@@ -174,7 +182,7 @@ export class ImagePipeline extends Construct {
         name: `${uid}InfraConfig`,
         description: 'Example Infrastructure Configuration for Image Builder',
         instanceTypes: props.instanceTypes ?? ['t3.medium', 'm5.large', 'm5.xlarge'],
-        snsTopicArn: topic.topicArn,
+        snsTopicArn: this.builderSnsTopic.topicArn,
       });
     } else {
       infrastructureConfig = new imagebuilder.CfnInfrastructureConfiguration(this, 'InfrastructureConfiguration', {
@@ -182,7 +190,7 @@ export class ImagePipeline extends Construct {
         name: `${uid}InfraConfig`,
         description: 'Example Infrastructure Configuration for Image Builder',
         instanceTypes: props.instanceTypes ?? ['t3.medium', 'm5.large', 'm5.xlarge'],
-        snsTopicArn: topic.topicArn,
+        snsTopicArn: this.builderSnsTopic.topicArn,
         securityGroupIds: props.securityGroups,
         subnetId: props.subnetId,
       });
@@ -325,9 +333,9 @@ export class ImagePipeline extends Construct {
         },
         memorySize: 256,
       });
-      amiSsmUpdateLambda.addEventSource(new SnsEventSource(topic, {}));
+      amiSsmUpdateLambda.addEventSource(new SnsEventSource(this.builderSnsTopic, {}));
     }
-    new imagebuilder.CfnImagePipeline(this, 'ImagePipeline', imagePipelineProps);
+    this.pipeline = new imagebuilder.CfnImagePipeline(this, 'ImagePipeline', imagePipelineProps);
   }
 
   /**
