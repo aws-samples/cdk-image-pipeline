@@ -125,6 +125,10 @@ export interface ImagePipelineProps {
    * Region for Parameter Store path above
    */
   readonly amiIdSsmRegion?: string;
+  /**
+   * The tags attached to the resource created by Image Builder
+   */
+  readonly resourceTags?: {[key: string]: any};
 }
 
 export class ImagePipeline extends Construct {
@@ -181,6 +185,7 @@ export class ImagePipeline extends Construct {
         instanceProfileName: profileName,
         name: `${uid}InfraConfig`,
         description: 'Example Infrastructure Configuration for Image Builder',
+        resourceTags: props.resourceTags,
         instanceTypes: props.instanceTypes ?? ['t3.medium', 'm5.large', 'm5.xlarge'],
         snsTopicArn: this.builderSnsTopic.topicArn,
       });
@@ -189,6 +194,7 @@ export class ImagePipeline extends Construct {
         instanceProfileName: profileName,
         name: `${uid}InfraConfig`,
         description: 'Example Infrastructure Configuration for Image Builder',
+        resourceTags: props.resourceTags,
         instanceTypes: props.instanceTypes ?? ['t3.medium', 'm5.large', 'm5.xlarge'],
         snsTopicArn: this.builderSnsTopic.topicArn,
         securityGroupIds: props.securityGroups,
