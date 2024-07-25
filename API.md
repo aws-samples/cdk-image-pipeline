@@ -240,7 +240,7 @@ const imagePipelineProps: ImagePipelineProps = { ... }
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.instanceTypes">instanceTypes</a></code> | <code>string[]</code> | List of instance types used in the Instance Configuration (Default: [ 't3.medium', 'm5.large', 'm5.xlarge' ]). |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.kmsKey">kmsKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | KMS Key used to encrypt the SNS topic. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.platform">platform</a></code> | <code>string</code> | Platform type Linux or Windows (Default: Linux). |
-| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.resourceTags">resourceTags</a></code> | <code>{[ key: string ]: any}</code> | The tags attached to the resource created by Image Builder. |
+| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.resourceTags">resourceTags</a></code> | <code>{[ key: string ]: string}</code> | The tags attached to the resource created by Image Builder. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.securityGroups">securityGroups</a></code> | <code>string[]</code> | List of security group IDs for the Infrastructure Configuration. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.subnetId">subnetId</a></code> | <code>string</code> | Subnet ID for the Infrastructure Configuration. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.userDataScript">userDataScript</a></code> | <code>string</code> | UserData script that will override default one (if specified). |
@@ -446,10 +446,10 @@ Platform type Linux or Windows (Default: Linux).
 ##### `resourceTags`<sup>Optional</sup> <a name="resourceTags" id="cdk-image-pipeline.ImagePipelineProps.property.resourceTags"></a>
 
 ```typescript
-public readonly resourceTags: {[ key: string ]: any};
+public readonly resourceTags: {[ key: string ]: string};
 ```
 
-- *Type:* {[ key: string ]: any}
+- *Type:* {[ key: string ]: string}
 
 The tags attached to the resource created by Image Builder.
 

@@ -128,7 +128,7 @@ export interface ImagePipelineProps {
   /**
    * The tags attached to the resource created by Image Builder
    */
-  readonly resourceTags?: {[key: string]: any};
+  readonly resourceTags?: {[key: string]: string};
 }
 
 export class ImagePipeline extends Construct {
