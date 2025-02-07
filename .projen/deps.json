@@ -12,7 +12,7 @@
     },
     {
       "name": "@types/prettier",
-      "version": "2.7.2",
+      "version": "3.0.0",
       "type": "build"
     },
     {
@@ -27,7 +27,7 @@
     },
     {
       "name": "aws-cdk-lib",
-      "version": "2.158.0",
+      "version": "2.178.1",
       "type": "build"
     },
     {
@@ -83,7 +83,7 @@
     },
     {
       "name": "projen",
-      "version": "0.87.3",
+      "version": "0.91.8",
       "type": "build"
     },
     {
@@ -107,12 +107,12 @@
     },
     {
       "name": "aws-cdk-lib",
-      "version": "2.158.0",
+      "version": "2.178.1",
       "type": "peer"
     },
     {
       "name": "constructs",
-      "version": "^10.3.0",
+      "version": "^10.4.2",
       "type": "peer"
     }
   ],

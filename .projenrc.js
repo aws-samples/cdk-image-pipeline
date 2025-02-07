@@ -3,8 +3,8 @@ const project = new awscdk.AwsCdkConstructLibrary({
   author: 'Cameron Magee',
   authorAddress: 'magcamer@amazon.com',
   copyrightOwner: 'Amazon.com, Inc. or its affiliates. All Rights Reserved.',
-  cdkVersion: '2.158.0',
-  constructsVersion: '10.3.0',
+  cdkVersion: '2.178.1',
+  constructsVersion: '10.4.2',
   defaultReleaseBranch: 'main',
   name: 'cdk-image-pipeline',
   repositoryUrl: 'https://github.com/aws-samples/cdk-image-pipeline.git',
@@ -17,11 +17,11 @@ const project = new awscdk.AwsCdkConstructLibrary({
   license: 'Apache-2.0',
   pullRequestTemplateContents: ['# Fixes', ' ', ' ', 'By submitting this pull request, I confirm that you can use, modify, copy, and redistribute this contribution, under the terms of your choice.'],
   releaseToNpm: true,
-  devDeps: ['@types/prettier@2.7.2'],
+  devDeps: ['@types/prettier@3.0.0'],
 });
 
-project.addPeerDeps('aws-cdk-lib@2.158.0');
-project.addDevDeps('aws-cdk-lib@2.158.0');
-project.addDevDeps('projen@0.87.3');
+project.addPeerDeps('aws-cdk-lib@2.178.1');
+project.addDevDeps('aws-cdk-lib@2.178.1');
+project.addDevDeps('projen@0.91.8');
 
 project.synth();
