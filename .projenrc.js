@@ -3,7 +3,7 @@ const project = new awscdk.AwsCdkConstructLibrary({
   author: 'Cameron Magee',
   authorAddress: 'magcamer@amazon.com',
   copyrightOwner: 'Amazon.com, Inc. or its affiliates. All Rights Reserved.',
-  cdkVersion: '2.178.1',
+  cdkVersion: '2.184.1',
   constructsVersion: '10.4.2',
   defaultReleaseBranch: 'main',
   name: 'cdk-image-pipeline',
@@ -20,8 +20,8 @@ const project = new awscdk.AwsCdkConstructLibrary({
   devDeps: ['@types/prettier@3.0.0'],
 });
 
-project.addPeerDeps('aws-cdk-lib@2.178.1');
-project.addDevDeps('aws-cdk-lib@2.178.1');
-project.addDevDeps('projen@0.91.8');
+project.addPeerDeps('aws-cdk-lib@2.184.1');
+project.addDevDeps('aws-cdk-lib@2.184.1');
+project.addDevDeps('projen@0.91.18');
 
 project.synth();
