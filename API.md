@@ -239,8 +239,10 @@ const imagePipelineProps: ImagePipelineProps = { ... }
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.imageRecipeVersion">imageRecipeVersion</a></code> | <code>string</code> | Image recipe version (Default: 0.0.1). |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.instanceTypes">instanceTypes</a></code> | <code>string[]</code> | List of instance types used in the Instance Configuration (Default: [ 't3.medium', 'm5.large', 'm5.xlarge' ]). |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.kmsKey">kmsKey</a></code> | <code>aws-cdk-lib.aws_kms.IKey</code> | KMS Key used to encrypt the SNS topic. |
+| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.name">name</a></code> | <code>string</code> | Name of the Image Pipeline. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.platform">platform</a></code> | <code>string</code> | Platform type Linux or Windows (Default: Linux). |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.resourceTags">resourceTags</a></code> | <code>{[ key: string ]: string}</code> | The tags attached to the resource created by Image Builder. |
+| <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.schedule">schedule</a></code> | <code><a href="#cdk-image-pipeline.ImagePipelineSchedule">ImagePipelineSchedule</a></code> | Schedule configuration for the image pipeline. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.securityGroups">securityGroups</a></code> | <code>string[]</code> | List of security group IDs for the Infrastructure Configuration. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.subnetId">subnetId</a></code> | <code>string</code> | Subnet ID for the Infrastructure Configuration. |
 | <code><a href="#cdk-image-pipeline.ImagePipelineProps.property.userDataScript">userDataScript</a></code> | <code>string</code> | UserData script that will override default one (if specified). |
@@ -431,6 +433,18 @@ KMS Key used to encrypt the SNS topic.
 
 ---
 
+##### `name`<sup>Optional</sup> <a name="name" id="cdk-image-pipeline.ImagePipelineProps.property.name"></a>
+
+```typescript
+public readonly name: string;
+```
+
+- *Type:* string
+
+Name of the Image Pipeline.
+
+---
+
 ##### `platform`<sup>Optional</sup> <a name="platform" id="cdk-image-pipeline.ImagePipelineProps.property.platform"></a>
 
 ```typescript
@@ -452,6 +466,18 @@ public readonly resourceTags: {[ key: string ]: string};
 - *Type:* {[ key: string ]: string}
 
 The tags attached to the resource created by Image Builder.
+
+---
+
+##### `schedule`<sup>Optional</sup> <a name="schedule" id="cdk-image-pipeline.ImagePipelineProps.property.schedule"></a>
+
+```typescript
+public readonly schedule: ImagePipelineSchedule;
+```
+
+- *Type:* <a href="#cdk-image-pipeline.ImagePipelineSchedule">ImagePipelineSchedule</a>
+
+Schedule configuration for the image pipeline.
 
 ---
 
@@ -513,6 +539,49 @@ public readonly vulnScansRepoTags: string[];
 - *Type:* string[]
 
 Store vulnerability scans through AWS Inpsector in ECR using these image tags (if option is enabled).
+
+---
+
+### ImagePipelineSchedule <a name="ImagePipelineSchedule" id="cdk-image-pipeline.ImagePipelineSchedule"></a>
+
+#### Initializer <a name="Initializer" id="cdk-image-pipeline.ImagePipelineSchedule.Initializer"></a>
+
+```typescript
+import { ImagePipelineSchedule } from 'cdk-image-pipeline'
+
+const imagePipelineSchedule: ImagePipelineSchedule = { ... }
+```
+
+#### Properties <a name="Properties" id="Properties"></a>
+
+| **Name** | **Type** | **Description** |
+| --- | --- | --- |
+| <code><a href="#cdk-image-pipeline.ImagePipelineSchedule.property.scheduleExpression">scheduleExpression</a></code> | <code>string</code> | The cron expression for the schedule. |
+| <code><a href="#cdk-image-pipeline.ImagePipelineSchedule.property.pipelineExecutionStartCondition">pipelineExecutionStartCondition</a></code> | <code>string</code> | Optional pipeline execution start condition. |
+
+---
+
+##### `scheduleExpression`<sup>Required</sup> <a name="scheduleExpression" id="cdk-image-pipeline.ImagePipelineSchedule.property.scheduleExpression"></a>
+
+```typescript
+public readonly scheduleExpression: string;
+```
+
+- *Type:* string
+
+The cron expression for the schedule.
+
+---
+
+##### `pipelineExecutionStartCondition`<sup>Optional</sup> <a name="pipelineExecutionStartCondition" id="cdk-image-pipeline.ImagePipelineSchedule.property.pipelineExecutionStartCondition"></a>
+
+```typescript
+public readonly pipelineExecutionStartCondition: string;
+```
+
+- *Type:* string
+
+Optional pipeline execution start condition.
 
 ---
 

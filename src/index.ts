@@ -38,7 +38,24 @@ export interface VolumeProps {
   readonly ebs: imagebuilder.CfnImageRecipe.EbsInstanceBlockDeviceSpecificationProperty;
 }
 
+export interface ImagePipelineSchedule {
+  /**
+   * The cron expression for the schedule.
+   */
+  readonly scheduleExpression: string;
+
+  /**
+   * Optional pipeline execution start condition.
+   */
+  readonly pipelineExecutionStartCondition?: 'EXPRESSION_MATCH_ONLY' | 'EXPRESSION_MATCH_AND_DEPENDENCY_UPDATES_AVAILABLE';
+}
+
+
 export interface ImagePipelineProps {
+  /**
+   * Name of the Image Pipeline
+   */
+  readonly name?: string;
   /**
    * List of component props
    */
@@ -129,6 +146,10 @@ export interface ImagePipelineProps {
    * The tags attached to the resource created by Image Builder
    */
   readonly resourceTags?: {[key: string]: string};
+  /**
+   * Schedule configuration for the image pipeline.
+   */
+  readonly schedule?: ImagePipelineSchedule;
 }
 
 export class ImagePipeline extends Construct {
@@ -254,10 +275,21 @@ export class ImagePipeline extends Construct {
     let imagePipelineProps: imagebuilder.CfnImagePipelineProps;
     imagePipelineProps = {
       infrastructureConfigurationArn: infrastructureConfig.attrArn,
-      name: `${uid}ImagePipeline`,
+      name: props.name ? props.name : `${uid}ImagePipeline`,
       description: 'A sample image pipeline',
       imageRecipeArn: imageRecipe.attrArn,
     };
+
+    if (props.schedule) {
+      imagePipelineProps = {
+        ...imagePipelineProps,
+        schedule: {
+          scheduleExpression: props.schedule.scheduleExpression,
+          pipelineExecutionStartCondition: props.schedule.pipelineExecutionStartCondition || 'EXPRESSION_MATCH_ONLY',
+        },
+      };
+    }
+
     if (props.enableVulnScans) {
       imagePipelineProps = {
         ...imagePipelineProps,
