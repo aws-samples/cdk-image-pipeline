@@ -25,6 +25,7 @@ const props: ImagePipelineProps = {
   amiIdSsmPath: '/ec2-image-builder/al2-x86',
   amiIdSsmAccountId: '11223344556',
   amiIdSsmRegion: 'us-east-1',
+  name: 'TestImagePipeline',
 };
 
 const propsWithNetworking: ImagePipelineProps = {
@@ -69,6 +70,21 @@ const propsWithVolumeConfig: ImagePipelineProps = {
   distributionRegions: ['us-east-1'],
 };
 
+const propsWithSchedule: ImagePipelineProps = {
+  ...props,
+  schedule: {
+    scheduleExpression: 'cron(0 0 * * ? *)',
+    pipelineExecutionStartCondition: 'EXPRESSION_MATCH_ONLY',
+  },
+};
+
+const propsWithDefaultSchedule: ImagePipelineProps = {
+  ...props,
+  schedule: {
+    scheduleExpression: 'cron(0 12 * * ? *)',
+  },
+};
+
 beforeAll(() => {
   process.env.CDK_DEFAULT_ACCOUNT = '123456789012';
   process.env.CDK_DEFAULT_REGION = 'us-east-1';
@@ -81,6 +97,12 @@ beforeAll(() => {
   });
   new ImagePipeline(testStack, 'ImagePipelineStack', props);
   template = Template.fromStack(testStack);
+});
+
+test('Image Pipeline is created with custom name', () => {
+  template.hasResourceProperties('AWS::ImageBuilder::ImagePipeline', {
+    Name: 'TestImagePipeline',
+  });
 });
 
 test('Infrastructure Configuration SNS topic is created', () => {
@@ -238,6 +260,43 @@ test('Image Pipeline has Inspector vulnerability scans configured', () => {
   });
 });
 
+test('Image Pipeline supports schedule configuration', () => {
+  const app1 = new cdk.App();
+  const testStack1 = new cdk.Stack(app1, 'testStackWithSchedule', {
+    env: {
+      account: process.env.CDK_DEFAULT_ACCOUNT,
+      region: process.env.CDK_DEFAULT_REGION,
+    },
+  });
+
+  new ImagePipeline(testStack1, 'ImagePipelineWithSchedule', propsWithSchedule);
+  const templateWithSchedule = Template.fromStack(testStack1);
+
+  templateWithSchedule.hasResourceProperties('AWS::ImageBuilder::ImagePipeline', {
+    Schedule: {
+      ScheduleExpression: 'cron(0 0 * * ? *)',
+      PipelineExecutionStartCondition: 'EXPRESSION_MATCH_ONLY',
+    },
+  });
+
+  // Test with default execution condition
+  const app2 = new cdk.App();
+  const testStack2 = new cdk.Stack(app2, 'testStackWithDefaultSchedule', {
+    env: {
+      account: process.env.CDK_DEFAULT_ACCOUNT,
+      region: process.env.CDK_DEFAULT_REGION,
+    },
+  });
+
+  new ImagePipeline(testStack2, 'ImagePipelineWithDefaultSchedule', propsWithDefaultSchedule);
+  const templateWithDefaultSchedule = Template.fromStack(testStack2);
+
+  templateWithDefaultSchedule.hasResourceProperties('AWS::ImageBuilder::ImagePipeline', {
+    Schedule: {
+      ScheduleExpression: 'cron(0 12 * * ? *)',
+    },
+  });
+});
 
 test('ImagePipeline exposes components as properties', () => {
   const app = new cdk.App();
