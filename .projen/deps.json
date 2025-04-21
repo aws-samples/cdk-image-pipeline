@@ -15,7 +15,7 @@
     },
     {
       "name": "@types/prettier",
-      "version": "3.0.0",
+      "version": "^3.0.0",
       "type": "build"
     },
     {
@@ -30,7 +30,7 @@
     },
     {
       "name": "aws-cdk-lib",
-      "version": "2.187.0",
+      "version": "^2.189.1",
       "type": "build"
     },
     {
@@ -85,7 +85,7 @@
     },
     {
       "name": "projen",
-      "version": "0.91.18",
+      "version": "^0.91.18",
       "type": "build"
     },
     {
@@ -98,7 +98,7 @@
     },
     {
       "name": "aws-cdk-lib",
-      "version": "2.187.0",
+      "version": "^2.189.1",
       "type": "peer"
     },
     {
