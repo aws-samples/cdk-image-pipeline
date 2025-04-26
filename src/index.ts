@@ -170,7 +170,6 @@ export class ImagePipeline extends Construct {
     this.imageRecipeComponents = [];
 
     const uid = Names.uniqueId(this);
-    const profileName = `${uid}Profile`;
 
     // Construct code below
     this.builderSnsTopic = new sns.Topic(this, 'ImageBuilderTopic', {
@@ -198,12 +197,11 @@ export class ImagePipeline extends Construct {
 
     const profile = new iam.CfnInstanceProfile(this, 'InstanceProfile', {
       roles: [role.roleName],
-      instanceProfileName: profileName,
     });
 
     if (props.securityGroups == null || props.subnetId == null) {
       infrastructureConfig = new imagebuilder.CfnInfrastructureConfiguration(this, 'InfrastructureConfiguration', {
-        instanceProfileName: profileName,
+        instanceProfileName: profile.ref,
         name: `${uid}InfraConfig`,
         description: 'Example Infrastructure Configuration for Image Builder',
         resourceTags: props.resourceTags,
@@ -212,7 +210,7 @@ export class ImagePipeline extends Construct {
       });
     } else {
       infrastructureConfig = new imagebuilder.CfnInfrastructureConfiguration(this, 'InfrastructureConfiguration', {
-        instanceProfileName: profileName,
+        instanceProfileName: profile.ref,
         name: `${uid}InfraConfig`,
         description: 'Example Infrastructure Configuration for Image Builder',
         resourceTags: props.resourceTags,
