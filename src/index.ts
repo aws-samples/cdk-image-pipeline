@@ -26,6 +26,10 @@ export interface ComponentProps {
    * Version for each component document
    */
   readonly version: string;
+  /**
+   * Parameters for the component
+   */
+  readonly parameters?: imagebuilder.CfnImageRecipe.ComponentParameterProperty[];
 }
 export interface VolumeProps {
   /**
@@ -261,7 +265,16 @@ export class ImagePipeline extends Construct {
         });
 
         // add the component to the Image Recipe
-        this.imageRecipeComponents.push({ componentArn: newComponent.attrArn });
+        let componentConfigurationProps: imagebuilder.CfnImageRecipe.ComponentConfigurationProperty = {
+          componentArn: newComponent.attrArn,
+        };
+        if (component.parameters) {
+          componentConfigurationProps = {
+            ...componentConfigurationProps,
+            parameters: component.parameters,
+          };
+        }
+        this.imageRecipeComponents.push(componentConfigurationProps);
       }
 
       imageRecipe.components = this.imageRecipeComponents;
