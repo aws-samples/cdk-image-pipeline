@@ -145,7 +145,7 @@ export interface ImagePipelineProps {
   /**
    * The tags attached to the resource created by Image Builder
    */
-  readonly resourceTags?: {[key: string]: string};
+  readonly resourceTags?: { [key: string]: string };
   /**
    * Schedule configuration for the image pipeline.
    */
