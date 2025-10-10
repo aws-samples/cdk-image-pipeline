@@ -254,7 +254,7 @@ const imagePipelineProps: ImagePipelineProps = { ... }
 ##### `components`<sup>Required</sup> <a name="components" id="cdk-image-pipeline.ImagePipelineProps.property.components"></a>
 
 ```typescript
-public readonly components: string | ComponentProps[];
+public readonly components: (string | ComponentProps)[];
 ```
 
 - *Type:* string | <a href="#cdk-image-pipeline.ComponentProps">ComponentProps</a>[]
